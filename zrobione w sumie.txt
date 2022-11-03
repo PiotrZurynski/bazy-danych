@@ -1,0 +1,425 @@
+login as: zurynskip
+zurynskip@213.184.8.36's password:
+Linux bad2 4.10.17-1-pve #1 SMP PVE 4.10.17-16 (Tue, 11 Jul 2017 09:55:44 +0200)              x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Wed Nov  2 12:57:53 2022 from 95.160.157.3
+zurynskip@bad2:~$ mysql -u zurynskip -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 3538
+Server version: 8.0.22 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use zurynskip
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> select *from przetwory
+    -> ;
+ERROR 1146 (42S02): Table 'zurynskip.przetwory' doesn't exist
+mysql> ;selectr *from izba
+ERROR:
+No query specified
+
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that              corresponds to your MySQL server version for the right syntax to use near 'selec             tr *from izba' at line 1
+mysql> ;select *from izba
+ERROR:
+No query specified
+
+    -> ;
++---------------+------------+--------+----------+------------+
+| adres_budynku | nazwa_izby | metraz | kolor    | wlasciciel |
++---------------+------------+--------+----------+------------+
+| tesciowej5    | spizarnia  |    300 | czerwony |          1 |
++---------------+------------+--------+----------+------------+
+1 row in set (0.00 sec)
+
+mysql> create table przetwory (id_przetworu INT PRIMARY KEY,rok_produkcji YEAR(1             654),id_wykonawcy INT, FOREIGN KEY(id_wykonawcy) REFERENCES postac(id_postaci),z             awartosc VARCHAR(40),dodatek VARCHAR(50) DEFAULT 'papryczkachilli',id_konsumenta             INT,FOREIGN KEY(id_konsumenta) REFERENCES postac(id_postaci));
+ERROR 1818 (HY000): Invalid display width. Use YEAR instead.
+mysql> YEAR(1654)
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that              corresponds to your MySQL server version for the right syntax to use near 'YEAR(             1654)' at line 1
+mysql> SELECT YEAR (1654);
++-------------+
+| YEAR (1654) |
++-------------+
+|        NULL |
++-------------+
+1 row in set, 1 warning (0.00 sec)
+
+mysql> SELECT YEAR '1654';
+ERROR 1054 (42S22): Unknown column 'YEAR' in 'field list'
+mysql> SELECT YEAR ('1654');
++---------------+
+| YEAR ('1654') |
++---------------+
+|          NULL |
++---------------+
+1 row in set, 1 warning (0.00 sec)
+
+mysql> select year ('2015-01-01')
+    -> ;
++---------------------+
+| year ('2015-01-01') |
++---------------------+
+|                2015 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> select year ('1654-01-01');
++---------------------+
+| year ('1654-01-01') |
++---------------------+
+|                1654 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> create table przetwory (id_przetworu INT PRIMARY KEY,rok_produkcji SELECT              YEAR(1654),id_wykonawcy INT, FOREIGN KEY(id_wykonawcy) REFERENCES postac(id_pos             taci),zawartosc VARCHAR(40),dodatek VARCHAR(50) DEFAULT 'papryczkachilli',id_kon             sumentaINT,FOREIGN KEY(id_konsumenta) REFERENCES postac(id_postaci));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that              corresponds to your MySQL server version for the right syntax to use near 'SELEC             T YEAR(1654),id_wykonawcy INT, FOREIGN KEY(id_wykonawcy) REFERENCES postac(' at              line 1
+mysql> mysql> create table przetwory (id_przetworu INT PRIMARY KEY,rok_produkcji SELECT YEAR(d_konsumentaINT,FOREIGN KEY(id_konsumenta) REFERENCES postac(id_postaci));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds tat line 1
+mysql> create table przetwory (id_przetworu INT PRIMARY KEY,rok_produkcji YEAR('1654-01-01'),_konsumentaINT,FOREIGN KEY(id_konsumenta) REFERENCES postac(id_postaci));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds tat line 1
+mysql> create table przetwory (id_przetworu INT PRIMARY KEY,rok_produkcji SELECT YEAR('1654-0lli',id_konsumentaINT,FOREIGN KEY(id_konsumenta) REFERENCES postac(id_postaci));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds tat line 1
+mysql> create table przetwory (id_przetworu INT PRIMARY KEY,rok_produkcji YEAR DEFAULT (1654-lli',id_konsumentaINT,FOREIGN KEY(id_konsumenta) REFERENCES postac(id_postaci));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds t
+mysql> create table przetwory (id_przetworu INT PRIMARY KEY,rok_produkcji YEAR NOT NULL DEFAU
+ 'papryczkachilli',id_konsumenta INT,FOREIGN KEY(id_konsumenta) REFERENCES postac(id_postaci)
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO przetwory (id_przetworu,id_wykonawcy,zawartosc,id_konsumenta) VALUES ('1',
+ERROR 1292 (22007): Incorrect datetime value: '1652'
+mysql> select *from przetwory;
+Empty set (0.00 sec)
+
+mysql> update przetwory set (id_przetworu='1');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds t
+mysql> insert into przetwory (id_wykonawcy) VALUES ('1');
+ERROR 1292 (22007): Incorrect datetime value: '1652'
+mysql> select *from postac;
++------------+----------+---------+------------+------+
+| id_postaci | nazwa    | rodzaj  | data_ur    | wiek |
++------------+----------+---------+------------+------+
+|          1 | Bjorn    | wiking  | 1991-01-20 |   31 |
+|          2 | Tesciowa | kobieta | 1936-01-15 |   88 |
+|          3 | Drozd    | ptak    | 1410-06-17 |  612 |
++------------+----------+---------+------------+------+
+3 rows in set (0.00 sec)
+
+mysql> update postac set (data_ur=1654.01.02) where nazwa='bjorn';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds t
+mysql> update postac set ('data_ur=1654.01.02') where nazwa='bjorn';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds t
+mysql> update postac set (data_ur='1654.01.02') where nazwa='bjorn';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds t
+mysql> insert into przetwory (zawartosc) VALUES ('bigos');
+ERROR 1292 (22007): Incorrect datetime value: '1652'
+mysql> insert into przetwory (zawartosc) VALUES ('bigos');
+ERROR 1292 (22007): Incorrect datetime value: '1652'
+mysql> select year;
+ERROR 1054 (42S22): Unknown column 'year' in 'field list'
+mysql> insert into przetwory (rok_produkcji) Values ('1654.01.01');
+ERROR 1264 (22003): Out of range value for column 'rok_produkcji' at row 1
+mysql> insert into przetwory (rok_produkcji) Values ('1654.01.02');
+ERROR 1264 (22003): Out of range value for column 'rok_produkcji' at row 1
+mysql> insert into przetwory (rok_produkcji) Values ('1652.01.01');
+ERROR 1264 (22003): Out of range value for column 'rok_produkcji' at row 1
+mysql> insert into przetwory (id_wykonawcy) values ('10-17-1654');
+ERROR 1265 (01000): Data truncated for column 'id_wykonawcy' at row 1
+mysql> insert into przetwory (id_przetworu,rok_produkcji,id_wykonawcy,zawartosc,id_konsumenta
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select *from przetwory;
++--------------+---------------+--------------+-----------+-----------------+---------------+
+| id_przetworu | rok_produkcji | id_wykonawcy | zawartosc | dodatek         | id_konsumenta |
++--------------+---------------+--------------+-----------+-----------------+---------------+
+|            1 |          1999 |            1 | bigos     | papryczkachilli |             3 |
++--------------+---------------+--------------+-----------+-----------------+---------------+
+1 row in set (0.01 sec)
+
+mysql> insert into postac (nazwa) VALUES ('wiking1','wiking2','wiking3','wiking4','wiking5');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into postac (nazwa) VALUES ('wiking1');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into postac (nazwa) VALUES ('wiking2');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into postac (nazwa) VALUES ('wiking3');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into postac (nazwa) VALUES ('wiking4');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into postac (nazwa) VALUES ('wiking5');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> UPDATE postac SET (rodzaj='wiking',data_ur='2000.01.01',wiek='22') WHERE nazwa='wiking
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds t
+mysql> UPDATE postac SET(rodzaj='wiking',data_ur='2000.01.01',wiek='22') WHERE nazwa='wiking1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds t
+mysql> UPDATE postac SET(rodzaj='wiking',data_ur='2000.01.01',wiek='22') WHERE nazwa='wiking1
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds t
+mysql> update postac set (rodzaj='wiking') where nazwa='wiking1';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds t
+mysql> select *from postac
+    -> ;
++------------+----------+---------+------------+------+
+| id_postaci | nazwa    | rodzaj  | data_ur    | wiek |
++------------+----------+---------+------------+------+
+|          1 | Bjorn    | wiking  | 1991-01-20 |   31 |
+|          2 | Tesciowa | kobieta | 1936-01-15 |   88 |
+|          3 | Drozd    | ptak    | 1410-06-17 |  612 |
+|          7 | wiking1  | NULL    | NULL       | NULL |
+|          8 | wiking2  | NULL    | NULL       | NULL |
+|          9 | wiking3  | NULL    | NULL       | NULL |
+|         10 | wiking4  | NULL    | NULL       | NULL |
+|         11 | wiking5  | NULL    | NULL       | NULL |
++------------+----------+---------+------------+------+
+8 rows in set (0.00 sec)
+
+mysql> update postac set (rodzaj='wiking') WHERE nazwa='wiking1';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds t
+mysql> create table statek (nazwa_statku INT PRIMARY KEY,rodzaj_statku ENUM('twardy','miekki'
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> Insert into table (nazwa_statku,rodzaj_statku,data_wodowania,max_ladownosc) VALUES ('m
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds tat line 1
+mysql> Insert into statek (nazwa_statku,rodzaj_statku,data_wodowania,max_ladownosc) VALUES ('
+ERROR 1366 (HY000): Incorrect integer value: 'mandarybka' for column 'nazwa_statku' at row 1
+mysql> drop table statek;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> create table statek (nazwa_statku VARCHAR(40) PRIMARY KEY,rodzaj_statku ENUM('twardy',
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> Insert into statek (nazwa_statku,rodzaj_statku,data_wodowania,max_ladownosc) VALUES ('
+Query OK, 1 row affected (0.01 sec)
+
+mysql> Insert into statek (nazwa_statku,rodzaj_statku,data_wodowania,max_ladownosc) VALUES ('
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from statek;
++--------------+---------------+----------------+---------------+
+| nazwa_statku | rodzaj_statku | data_wodowania | max_ladownosc |
++--------------+---------------+----------------+---------------+
+| mandarybka   | twardy        | 2022-01-01     |           700 |
+| scuttleship  | miekki        | 2022-01-01     |          1700 |
++--------------+---------------+----------------+---------------+
+2 rows in set (0.00 sec)
+
+mysql> alter table postac add funkcja VARCHAR (40);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> update postac set (funkcja='kapitan') WHERE nazwa='bjorn'
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds t
+mysql> update postac set (funkcja='kapitan') WHERE id_postaci='1';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds t
+mysql> update postac set (funkcja='kapitan') WHERE id_postaci ='bjorn';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds t
+mysql> update postac set (funkcja='kapitan') WHERE id_postaci ='1';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds t
+mysql> update postac set funkcja='kapitan' WHERE id_postaci ='1';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from postac;
++------------+----------+---------+------------+------+---------+
+| id_postaci | nazwa    | rodzaj  | data_ur    | wiek | funkcja |
++------------+----------+---------+------------+------+---------+
+|          1 | Bjorn    | wiking  | 1991-01-20 |   31 | kapitan |
+|          2 | Tesciowa | kobieta | 1936-01-15 |   88 | NULL    |
+|          3 | Drozd    | ptak    | 1410-06-17 |  612 | NULL    |
+|          7 | wiking1  | NULL    | NULL       | NULL | NULL    |
+|          8 | wiking2  | NULL    | NULL       | NULL | NULL    |
+|          9 | wiking3  | NULL    | NULL       | NULL | NULL    |
+|         10 | wiking4  | NULL    | NULL       | NULL | NULL    |
+|         11 | wiking5  | NULL    | NULL       | NULL | NULL    |
++------------+----------+---------+------------+------+---------+
+8 rows in set (0.00 sec)
+
+mysql> alter table statek add zaloga INT;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table postac add statkowicze INT, FOREIGN KEY(statkowicze) REFERENCES statek(zal
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds t
+mysql> alter table postac add statkowicze INT;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table add FOREIGN KEY statkowicze;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds t
+mysql> alter table postac add statkowicze INT, FOREIGN KEY(statkowicze) REFERENCES statek(zal
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds t
+mysql> alter table postac add statkowicze INT,FOREIGN KEY(statkowicze) REFERENCES statek(zalo
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds t
+mysql> alter table postac add (statkowicze INT,FOREIGN KEY(statkowicze) REFERENCES statek(zal
+ERROR 1060 (42S21): Duplicate column name 'statkowicze'
+mysql> alter table postac alter statkowicze add FOREIGN KEY(statkowicze) REFERENCES statek(za
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds t
+mysql> select *from statek;
++--------------+---------------+----------------+---------------+--------+
+| nazwa_statku | rodzaj_statku | data_wodowania | max_ladownosc | zaloga |
++--------------+---------------+----------------+---------------+--------+
+| mandarybka   | twardy        | 2022-01-01     |           700 |   NULL |
+| scuttleship  | miekki        | 2022-01-01     |          1700 |   NULL |
++--------------+---------------+----------------+---------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select *from postac;
++------------+----------+---------+------------+------+---------+-------------+
+| id_postaci | nazwa    | rodzaj  | data_ur    | wiek | funkcja | statkowicze |
++------------+----------+---------+------------+------+---------+-------------+
+|          1 | Bjorn    | wiking  | 1991-01-20 |   31 | kapitan |        NULL |
+|          2 | Tesciowa | kobieta | 1936-01-15 |   88 | NULL    |        NULL |
+|          3 | Drozd    | ptak    | 1410-06-17 |  612 | NULL    |        NULL |
+|          7 | wiking1  | NULL    | NULL       | NULL | NULL    |        NULL |
+|          8 | wiking2  | NULL    | NULL       | NULL | NULL    |        NULL |
+|          9 | wiking3  | NULL    | NULL       | NULL | NULL    |        NULL |
+|         10 | wiking4  | NULL    | NULL       | NULL | NULL    |        NULL |
+|         11 | wiking5  | NULL    | NULL       | NULL | NULL    |        NULL |
++------------+----------+---------+------------+------+---------+-------------+
+8 rows in set (0.00 sec)
+
+mysql> mysql> alter table postac add foreign key(statkowicze) REFERENCES statek(             zaloga);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that              corresponds to your MySQL server version for the right syntax to use near 'posta             c add foreign key(statkowicze) REFERENCES statek(zaloga)' at line 1
+mysql> alter table statko postac add foreign key(statkowicze) REFERENCES statek(             zaloga);alter table postac add constraint statkowicze foreign key(statkowicze) r             eferences statek(zaloga);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that              corresponds to your MySQL server version for the right syntax to use near 'posta             c add foreign key(statkowicze) REFERENCES statek(zaloga)' at line 1
+ERROR 1822 (HY000): Failed to add the foreign key constraint. Missing index for              constraint 'statkowicze' in the referenced table 'statek'
+mysql> alter table statko postac add foreign key(statkowicze) REFERENCES statek(             zaloga);alter table postac add constraint statkowicze foreign key(statkowicze) r             eferences statek(zaloga);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that              corresponds to your MySQL server version for the right syntax to use near 'posta             c add foreign key(statkowicze) REFERENCES statek(zaloga)' at line 1
+ERROR 1822 (HY000): Failed to add the foreign key constraint. Missing index for              constraint 'statkowicze' in the referenced table 'statek'
+mysql> alter table postac drop column statkowicze;
+Query OK, 0 rows affected (0.35 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table postac add statkowicze INT,FOREIGN KEY(statkowicze) REFERENCE             S statek(zaloga);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that              corresponds to your MySQL server version for the right syntax to use near 'FOREI             GN KEY(statkowicze) REFERENCES statek(zaloga)' at line 1
+mysql> alter table postac add (statkowicze INT,FOREIGN KEY(statkowicze) REFERENC             ES statek(zaloga));
+ERROR 1822 (HY000): Failed to add the foreign key constraint. Missing index for              constraint 'postac_ibfk_1' in the referenced table 'statek'
+mysql> alter table postac add statkowicze INT, ADD CONSTRAINT FOREIGN KEY(statko             wicze) REFERENCES statek(zaloga);
+ERROR 1822 (HY000): Failed to add the foreign key constraint. Missing index for              constraint 'postac_ibfk_1' in the referenced table 'statek'
+mysql> alter table postac ADD (nazwa_statku VARCHAR(40), FOREIGN KEY(nazwa_statk             u) REFERENCES statek(nazwa_statku);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that              corresponds to your MySQL server version for the right syntax to use near '' at              line 1
+mysql> mysql> alter table postac ADD (nazwa_statku VARCHAR(40), FOREIGN KEY(nazwa_statku) REF
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds t
+mysql> alter table postac ADD (nazwa_statku VARCHAR(40), FOREIGN KEY(nazwa_statku) REFERENCES
+Query OK, 8 rows affected (0.05 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> insert into statek (zaloga) VALUES ('3');
+ERROR 1364 (HY000): Field 'nazwa_statku' doesn't have a default value
+mysql> insert into statek (zaloga) VALUES ('Drozd');
+ERROR 1366 (HY000): Incorrect integer value: 'Drozd' for column 'zaloga' at row 1
+mysql> alter table statek drop column zaloga;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table statek add zaloga VARCHAR(40);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into statek (zaloga) VALUES ('Drozd');
+ERROR 1364 (HY000): Field 'nazwa_statku' doesn't have a default value
+mysql> insert into statek (zaloga) VALUES 'Drozd';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds t
+mysql> insert into statek (zaloga) VALUES ('Drozd');
+ERROR 1364 (HY000): Field 'nazwa_statku' doesn't have a default value
+mysql> select *from statek;
++--------------+---------------+----------------+---------------+--------+
+| nazwa_statku | rodzaj_statku | data_wodowania | max_ladownosc | zaloga |
++--------------+---------------+----------------+---------------+--------+
+| mandarybka   | twardy        | 2022-01-01     |           700 | NULL   |
+| scuttleship  | miekki        | 2022-01-01     |          1700 | NULL   |
++--------------+---------------+----------------+---------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> update statek set (zaloga='drozd') where nazwa_statku='mandarybka';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds t
+mysql> drop table statek
+    -> ;
+ERROR 3730 (HY000): Cannot drop table 'statek' referenced by a foreign key constraint 'postac
+mysql> alter table statek MODIFY nazwa_statku NOT NULL AUTO_INCREMENT;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that              corresponds to your MySQL server version for the right syntax to use near 'NOT N             ULL AUTO_INCREMENT' at line 1
+mysql> select *from postac;
++------------+----------+---------+------------+------+---------+--------------+
+| id_postaci | nazwa    | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku |
++------------+----------+---------+------------+------+---------+--------------+
+|          1 | Bjorn    | wiking  | 1991-01-20 |   31 | kapitan | NULL         |
+|          2 | Tesciowa | kobieta | 1936-01-15 |   88 | NULL    | NULL         |
+|          3 | Drozd    | ptak    | 1410-06-17 |  612 | NULL    | NULL         |
+|          7 | wiking1  | NULL    | NULL       | NULL | NULL    | NULL         |
+|          8 | wiking2  | NULL    | NULL       | NULL | NULL    | NULL         |
+|          9 | wiking3  | NULL    | NULL       | NULL | NULL    | NULL         |
+|         10 | wiking4  | NULL    | NULL       | NULL | NULL    | NULL         |
+|         11 | wiking5  | NULL    | NULL       | NULL | NULL    | NULL         |
++------------+----------+---------+------------+------+---------+--------------+
+8 rows in set (0.01 sec)
+
+mysql> update postac set (nazwa_statku='mandarybka') WHERE id_postaci='1';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(nazwa_statku='mandarybka') WHERE id_postaci='1'' at line 1
+mysql> update postac set nazwa_statku='mandarybka' WHERE id_postaci='1';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set nazwa_statku='mandarybka' WHERE id_postaci='3';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set nazwa_statku='scuttleship' WHERE id_postaci='7';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set nazwa_statku='scuttleship' WHERE id_postaci='8';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set nazwa_statku='scuttleship' WHERE id_postaci='9';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set nazwa_statku='scuttleship' WHERE id_postaci='10';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set nazwa_statku='scuttleship' WHERE id_postaci='11';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from izba;
++---------------+------------+--------+----------+------------+
+| adres_budynku | nazwa_izby | metraz | kolor    | wlasciciel |
++---------------+------------+--------+----------+------------+
+| tesciowej5    | spizarnia  |    300 | czerwony |          1 |
++---------------+------------+--------+----------+------------+
+1 row in set (0.00 sec)
+
+mysql> delete from izba where adres_budynku=tesciowej5;
+ERROR 1054 (42S22): Unknown column 'tesciowej5' in 'where clause'
+mysql> delete from izba where adres_budynku='tesciowej5';
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select *from izba;
+Empty set (0.00 sec)
+
+mysql> drop table izba;
+Query OK, 0 rows affected (0.02 sec)
