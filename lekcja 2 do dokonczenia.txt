@@ -1,0 +1,403 @@
+mysql> DELETE FROM postacie WHERE id_postaci=16;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> DELETE FROM postacie WHERE id_postaci=15;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> ALTER TABLE postacie drop PRIMARY KEY
+    -> ;
+ERROR 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+mysql> ALTER TABLE postacie drop PRIMARY KEY, ADD PRIMARY KEY ('nazwa');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ''nazwa')' at line 1
+mysql> ALTER TABLE postacie drop PRIMARY KEY, ADD PRIMARY KEY (nazwa);
+ERROR 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+mysql> ^CROR 1075
+mysql> ^C
+mysql> ALTER TABLE postacie ADD PRIMARY KEY nazwa;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> ALTER TABLE postacie ADD PRIMARY KEY (nazwa);
+ERROR 1068 (42000): Multiple primary key defined
+mysql> ALTER TABLE postacie drop PRIMARY KEY, ADD PRIMARY KEY (nazwa);
+ERROR 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+mysql> ALTER TABLE postacie ADD PRIMARY KEY(nazwa);
+ERROR 1068 (42000): Multiple primary key defined
+mysql> SHOW CREATE TABLE postacie
+    -> ;
++----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table    | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
++----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| postacie | CREATE TABLE `postacie` (
+  `id_postaci` int NOT NULL AUTO_INCREMENT,
+  `nazwa` varchar(40) DEFAULT NULL,
+  `rodzaj` enum('wiking','ptak','kobieta') DEFAULT NULL,
+  `data_ur` date DEFAULT NULL,
+  `wiek` int unsigned DEFAULT NULL,
+  `funckja` varchar(40) DEFAULT NULL,
+  `nazwa_statku` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`id_postaci`),
+  KEY `nazwa_statku` (`nazwa_statku`),
+  CONSTRAINT `postacie_ibfk_1` FOREIGN KEY (`nazwa_statku`) REFERENCES `statek` (`nazwa_statku`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SHOW TABLE;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> SHOW TABLES;
++--------------------+
+| Tables_in_skrockim |
++--------------------+
+| postacie           |
+| przetwory          |
+| statek             |
+| walizka            |
++--------------------+
+4 rows in set (0.00 sec)
+
+mysql> SHOW CREATE TABLE przetwory
+    -> ;
++-----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table     | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
++-----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| przetwory | CREATE TABLE `przetwory` (
+  `id_przetworu` int NOT NULL,
+  `rok_produkcji` year NOT NULL DEFAULT (year(((1654 - 1) - 1))),
+  `id_wykonawcy` int DEFAULT NULL,
+  `zawartosc` varchar(40) DEFAULT NULL,
+  `dodatek` varchar(40) DEFAULT 'papryczka_chilli',
+  `id_konsumenta` int DEFAULT NULL,
+  PRIMARY KEY (`id_przetworu`),
+  KEY `id_wykonawcy` (`id_wykonawcy`),
+  KEY `id_konsumenta` (`id_konsumenta`),
+  CONSTRAINT `przetwory_ibfk_1` FOREIGN KEY (`id_wykonawcy`) REFERENCES `postacie` (`id_postaci`),
+  CONSTRAINT `przetwory_ibfk_2` FOREIGN KEY (`id_konsumenta`) REFERENCES `postacie` (`id_postaci`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> ALTER TABLE przetwory drop FOREIGN KEY
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> ALTER TABLE przetwory drop FOREIGN KEY('id_konsumenta')
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '('id_konsumenta')' at line 1
+mysql> ALTER TABLE przetwory drop FOREIGN KEY(id_konsumenta)
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(id_konsumenta)' at line 1
+mysql> ALTER TABLE przetwory drop FOREIGN KEY id_konsumenta;
+ERROR 1091 (42000): Can't DROP 'id_konsumenta'; check that column/key exists
+mysql> ALTER TABLE przetwory drop FOREIGN KEY id_postaci;
+ERROR 1091 (42000): Can't DROP 'id_postaci'; check that column/key exists
+mysql> ALTER TABLE przetwory drop FOREIGN KEY;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> ALTER TABLE przetwory drop FOREIGN KEY przetwory_ibfk_1;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE przetwory drop FOREIGN KEY przetwory_ibfk_2;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SHOW CREATE TABLE przetwory
+    -> ;
++-----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table     | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
++-----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| przetwory | CREATE TABLE `przetwory` (
+  `id_przetworu` int NOT NULL,
+  `rok_produkcji` year NOT NULL DEFAULT (year(((1654 - 1) - 1))),
+  `id_wykonawcy` int DEFAULT NULL,
+  `zawartosc` varchar(40) DEFAULT NULL,
+  `dodatek` varchar(40) DEFAULT 'papryczka_chilli',
+  `id_konsumenta` int DEFAULT NULL,
+  PRIMARY KEY (`id_przetworu`),
+  KEY `id_wykonawcy` (`id_wykonawcy`),
+  KEY `id_konsumenta` (`id_konsumenta`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SHOW TABLES;
++--------------------+
+| Tables_in_skrockim |
++--------------------+
+| postacie           |
+| przetwory          |
+| statek             |
+| walizka            |
++--------------------+
+4 rows in set (0.00 sec)
+
+mysql> SHOW CREATE TABLE statek;
++--------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table  | Create Table                                                                                                                                                                                                                                                                                                                             |
++--------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| statek | CREATE TABLE `statek` (
+  `nazwa_statku` varchar(40) NOT NULL,
+  `rodzaj_statku` enum('byrding','drakkar','knara','langskip','sneka') DEFAULT NULL,
+  `data_wodowania` date DEFAULT NULL,
+  `max_ladownosc` int unsigned DEFAULT NULL,
+  PRIMARY KEY (`nazwa_statku`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++--------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SHOW CREATE TABLE walizka;
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table   | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| walizka | CREATE TABLE `walizka` (
+  `id_walizki` int NOT NULL AUTO_INCREMENT,
+  `pojemnosc` int unsigned DEFAULT NULL,
+  `kolor` enum('rozowy','czerwony','teczowy','zolty') DEFAULT 'rozowy',
+  `id_wlasciciela` int DEFAULT NULL,
+  PRIMARY KEY (`id_walizki`),
+  KEY `id_wlasciciela` (`id_wlasciciela`),
+  CONSTRAINT `walizka_ibfk_1` FOREIGN KEY (`id_wlasciciela`) REFERENCES `postacie` (`id_postaci`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++---------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> ALTER TABLE walizka drop FOREIGN KEY walizka_ibfk_1;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SHOW CREATE TABLE walizka;
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table   | Create Table                                                                                                                                                                                                                                                                                                                                                                           |
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| walizka | CREATE TABLE `walizka` (
+  `id_walizki` int NOT NULL AUTO_INCREMENT,
+  `pojemnosc` int unsigned DEFAULT NULL,
+  `kolor` enum('rozowy','czerwony','teczowy','zolty') DEFAULT 'rozowy',
+  `id_wlasciciela` int DEFAULT NULL,
+  PRIMARY KEY (`id_walizki`),
+  KEY `id_wlasciciela` (`id_wlasciciela`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++---------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SHOW CREATE TABLE postacie;
++----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table    | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
++----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| postacie | CREATE TABLE `postacie` (
+  `id_postaci` int NOT NULL AUTO_INCREMENT,
+  `nazwa` varchar(40) DEFAULT NULL,
+  `rodzaj` enum('wiking','ptak','kobieta') DEFAULT NULL,
+  `data_ur` date DEFAULT NULL,
+  `wiek` int unsigned DEFAULT NULL,
+  `funckja` varchar(40) DEFAULT NULL,
+  `nazwa_statku` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`id_postaci`),
+  KEY `nazwa_statku` (`nazwa_statku`),
+  CONSTRAINT `postacie_ibfk_1` FOREIGN KEY (`nazwa_statku`) REFERENCES `statek` (`nazwa_statku`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> ALTER TABLE postacie drop PRIMARY KEY;
+ERROR 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+mysql> describe postacie
+    -> ;
++--------------+---------------------------------+------+-----+---------+----------------+
+| Field        | Type                            | Null | Key | Default | Extra          |
++--------------+---------------------------------+------+-----+---------+----------------+
+| id_postaci   | int                             | NO   | PRI | NULL    | auto_increment |
+| nazwa        | varchar(40)                     | YES  |     | NULL    |                |
+| rodzaj       | enum('wiking','ptak','kobieta') | YES  |     | NULL    |                |
+| data_ur      | date                            | YES  |     | NULL    |                |
+| wiek         | int unsigned                    | YES  |     | NULL    |                |
+| funckja      | varchar(40)                     | YES  |     | NULL    |                |
+| nazwa_statku | varchar(40)                     | YES  | MUL | NULL    |                |
++--------------+---------------------------------+------+-----+---------+----------------+
+7 rows in set (0.00 sec)
+
+mysql> ALTER TABLE postacie MODIFY id_postaci INT NOT NULL
+    -> ;
+Query OK, 6 rows affected (0.05 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE postacie DROP PRIMARY KEY;
+Query OK, 6 rows affected (0.10 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> describe postacie
+    -> ;
++--------------+---------------------------------+------+-----+---------+-------+
+| Field        | Type                            | Null | Key | Default | Extra |
++--------------+---------------------------------+------+-----+---------+-------+
+| id_postaci   | int                             | NO   |     | NULL    |       |
+| nazwa        | varchar(40)                     | YES  |     | NULL    |       |
+| rodzaj       | enum('wiking','ptak','kobieta') | YES  |     | NULL    |       |
+| data_ur      | date                            | YES  |     | NULL    |       |
+| wiek         | int unsigned                    | YES  |     | NULL    |       |
+| funckja      | varchar(40)                     | YES  |     | NULL    |       |
+| nazwa_statku | varchar(40)                     | YES  | MUL | NULL    |       |
++--------------+---------------------------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT *FROM postacie
+    -> ;
++------------+----------+---------+------------+------+---------+--------------+
+| id_postaci | nazwa    | rodzaj  | data_ur    | wiek | funckja | nazwa_statku |
++------------+----------+---------+------------+------+---------+--------------+
+|          7 | bjorn    | wiking  | 1958-02-28 |   64 | kapitan | biala        |
+|          8 | drozd    | ptak    | 1410-07-15 |  612 | NULL    | NULL         |
+|          9 | tesciowa | kobieta | 1936-06-01 |   88 | NULL    | NULL         |
+|         12 | Mariusz  | wiking  | NULL       | NULL | NULL    | biala        |
+|         13 | Dariusz  | wiking  | NULL       | NULL | NULL    | czarna       |
+|         14 | Jedrzej  | wiking  | NULL       | NULL | NULL    | biala        |
++------------+----------+---------+------------+------+---------+--------------+
+6 rows in set (0.00 sec)
+
+mysql> ALTER TABLE postacie ADD (pesel INT(11) PRIMARY KEY) AFTER id_postaci;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'AFTER id_postaci' at line 1
+mysql> ALTER TABLE postacie ADD (pesel INT(11) PRIMARY KEY) AFTER (id_postaci);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'AFTER (id_postaci)' at line 1
+mysql> ALTER TABLE postacie ADD (pesel INT(11) PRIMARY KEY);
+ERROR 1062 (23000): Duplicate entry '0' for key 'postacie.PRIMARY'
+mysql> ALTER TABLE postacie ADD (pesel VARCHAR(11) PRIMARY KEY);
+ERROR 1062 (23000): Duplicate entry '' for key 'postacie.PRIMARY'
+mysql> ALTER TABLE postacie ADD (pesel INT(11));
+Query OK, 0 rows affected, 1 warning (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> ALTER TABLE postacie ADD PRIMARY KEY pesel;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> ALTER TABLE postacie ADD PRIMARY KEY (pesel);
+ERROR 1138 (22004): Invalid use of NULL value
+mysql> ALTER TABLE postacie ADD NOT NULL PRIMARY KEY (pesel);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'NOT NULL PRIMARY KEY (pesel)' at line 1
+mysql> ALTER TABLE postacie MODIFY(pesel) INT(11) NOT NULL;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(pesel) INT(11) NOT NULL' at line 1
+mysql> ALTER TABLE postacie MODIFY pesel INT(11) NOT NULL;
+ERROR 1138 (22004): Invalid use of NULL value
+mysql> ALTER TABLE postacie MODIFY (pesel INT(11) NOT NULL);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(pesel INT(11) NOT NULL)' at line 1
+mysql> ALTER TABLE postacie MODIFY pesel (pesel INT(11) NOT NULL);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(pesel INT(11) NOT NULL)' at line 1
+mysql> ALTER TABLE postacie MODIFY pesel INT(11) NOT NULL;
+ERROR 1138 (22004): Invalid use of NULL value
+mysql> SELECT *FROM postacie
+    -> ;
++------------+----------+---------+------------+------+---------+--------------+-------+
+| id_postaci | nazwa    | rodzaj  | data_ur    | wiek | funckja | nazwa_statku | pesel |
++------------+----------+---------+------------+------+---------+--------------+-------+
+|          7 | bjorn    | wiking  | 1958-02-28 |   64 | kapitan | biala        |  NULL |
+|          8 | drozd    | ptak    | 1410-07-15 |  612 | NULL    | NULL         |  NULL |
+|          9 | tesciowa | kobieta | 1936-06-01 |   88 | NULL    | NULL         |  NULL |
+|         12 | Mariusz  | wiking  | NULL       | NULL | NULL    | biala        |  NULL |
+|         13 | Dariusz  | wiking  | NULL       | NULL | NULL    | czarna       |  NULL |
+|         14 | Jedrzej  | wiking  | NULL       | NULL | NULL    | biala        |  NULL |
++------------+----------+---------+------------+------+---------+--------------+-------+
+6 rows in set (0.00 sec)
+
+mysql> UPDATE postacie SET pesel = '11111111111' WHERE id_postaci=7;
+ERROR 1264 (22003): Out of range value for column 'pesel' at row 1
+mysql> UPDATE postacie SET pesel = '1111111111' WHERE id_postaci=7;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE postacie SET pesel = '22222222222' WHERE id_postaci=7;
+ERROR 1264 (22003): Out of range value for column 'pesel' at row 1
+mysql> UPDATE postacie SET pesel = '2222222222' WHERE id_postaci=7;
+ERROR 1264 (22003): Out of range value for column 'pesel' at row 1
+mysql> UPDATE postacie SET pesel = '3333333333' WHERE id_postaci=8;
+ERROR 1264 (22003): Out of range value for column 'pesel' at row 2
+mysql> UPDATE postacie SET pesel = '333333333' WHERE id_postaci=8;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE postacie SET pesel = '2222222222' WHERE id_postaci=9;
+ERROR 1264 (22003): Out of range value for column 'pesel' at row 3
+mysql> UPDATE postacie SET pesel = '222222222' WHERE id_postaci=9;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE postacie SET pesel = '222222223' WHERE id_postaci=12;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE postacie SET pesel = '222222224' WHERE id_postaci=13;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE postacie SET pesel = '222222225' WHERE id_postaci=14;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT *FROM postacie;
++------------+----------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa    | rodzaj  | data_ur    | wiek | funckja | nazwa_statku | pesel      |
++------------+----------+---------+------------+------+---------+--------------+------------+
+|          7 | bjorn    | wiking  | 1958-02-28 |   64 | kapitan | biala        | 1111111111 |
+|          8 | drozd    | ptak    | 1410-07-15 |  612 | NULL    | NULL         |  333333333 |
+|          9 | tesciowa | kobieta | 1936-06-01 |   88 | NULL    | NULL         |  222222222 |
+|         12 | Mariusz  | wiking  | NULL       | NULL | NULL    | biala        |  222222223 |
+|         13 | Dariusz  | wiking  | NULL       | NULL | NULL    | czarna       |  222222224 |
+|         14 | Jedrzej  | wiking  | NULL       | NULL | NULL    | biala        |  222222225 |
++------------+----------+---------+------------+------+---------+--------------+------------+
+6 rows in set (0.00 sec)
+
+mysql> ALTER TABLE postacie MODIFY pesel INT(11) NOT NULL;
+Query OK, 0 rows affected, 1 warning (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> ALTER TABLE postacie MODIFY pesel INT(11) NOT NULL PRIMARY KEY;
+Query OK, 0 rows affected, 1 warning (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> show create table postacie;
++----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table    | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
++----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| postacie | CREATE TABLE `postacie` (
+  `id_postaci` int NOT NULL,
+  `nazwa` varchar(40) DEFAULT NULL,
+  `rodzaj` enum('wiking','ptak','kobieta') DEFAULT NULL,
+  `data_ur` date DEFAULT NULL,
+  `wiek` int unsigned DEFAULT NULL,
+  `funckja` varchar(40) DEFAULT NULL,
+  `nazwa_statku` varchar(40) DEFAULT NULL,
+  `pesel` int NOT NULL,
+  PRIMARY KEY (`pesel`),
+  KEY `nazwa_statku` (`nazwa_statku`),
+  CONSTRAINT `postacie_ibfk_1` FOREIGN KEY (`nazwa_statku`) REFERENCES `statek` (`nazwa_statku`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> describe postacie;
++--------------+---------------------------------+------+-----+---------+-------+
+| Field        | Type                            | Null | Key | Default | Extra |
++--------------+---------------------------------+------+-----+---------+-------+
+| id_postaci   | int                             | NO   |     | NULL    |       |
+| nazwa        | varchar(40)                     | YES  |     | NULL    |       |
+| rodzaj       | enum('wiking','ptak','kobieta') | YES  |     | NULL    |       |
+| data_ur      | date                            | YES  |     | NULL    |       |
+| wiek         | int unsigned                    | YES  |     | NULL    |       |
+| funckja      | varchar(40)                     | YES  |     | NULL    |       |
+| nazwa_statku | varchar(40)                     | YES  | MUL | NULL    |       |
+| pesel        | int                             | NO   | PRI | NULL    |       |
++--------------+---------------------------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> ALTER TABLE postacie MODIFY rodzaj ENUM('wiking', 'ptak', 'kobieta', 'syrena');
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT *FROM postacie
+    -> ;
++------------+----------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa    | rodzaj  | data_ur    | wiek | funckja | nazwa_statku | pesel      |
++------------+----------+---------+------------+------+---------+--------------+------------+
+|          9 | tesciowa | kobieta | 1936-06-01 |   88 | NULL    | NULL         |  222222222 |
+|         12 | Mariusz  | wiking  | NULL       | NULL | NULL    | biala        |  222222223 |
+|         13 | Dariusz  | wiking  | NULL       | NULL | NULL    | czarna       |  222222224 |
+|         14 | Jedrzej  | wiking  | NULL       | NULL | NULL    | biala        |  222222225 |
+|          8 | drozd    | ptak    | 1410-07-15 |  612 | NULL    | NULL         |  333333333 |
+|          7 | bjorn    | wiking  | 1958-02-28 |   64 | kapitan | biala        | 1111111111 |
++------------+----------+---------+------------+------+---------+--------------+------------+
+6 rows in set (0.00 sec)
+

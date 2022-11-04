@@ -1,0 +1,213 @@
+mysql> SHOW TABLES;
++--------------------+
+| Tables_in_skrockim |
++--------------------+
+| izba               |
+| postacie           |
+| walizka            |
++--------------------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO postacie (nazwa, rodzaj) VALUES ('Mariusz', 'wiking')
+    -> ;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO postacie (nazwa, rodzaj) VALUES ('Dariusz', 'wiking');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO postacie (nazwa, rodzaj) VALUES ('Jedrzej', 'wiking');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO postacie (nazwa, rodzaj) VALUES ('Konstanty', 'wiking');
+Query OK, 1 row affected (2.00 sec)
+
+mysql> INSERT INTO postacie (nazwa, rodzaj) VALUES ('Piotr', 'wiking');
+Query OK, 1 row affected (0.00 sec)
+
+
+
+mysql> CREATE TABLE przetwory (id_przetworu INT PRIMARY KEY, rok_produkcji YEAR
+NOT NULL DEFAULT (YEAR(1654-01-01)), id_wykonawcy INT, FOREIGN KEY(id_wykonawcy) REFERENCES postacie(id_postaci), zawartosc VARCHAR(40), dodatek VARCHAR(40) DEF                                       AULT 'papryczka_chilli', id_konsumenta INT, FOREIGN KEY(id_konsumenta) REFERENCE                                       S postacie(id_postaci));
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> SELECT *FROM przetwory
+    -> ;
+Empty set (0.01 sec)
+
+mysql> INSERT INTO przetwory (id_przetworu, rok_produkcji, id_wykonawcy, zawarto
+sc, id_konsumenta) VALUES ('1', '1939', '7', 'bigos', '9');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT *FROM przetwory;
++--------------+---------------+--------------+-----------+------------------+--                                       -------------+
+| id_przetworu | rok_produkcji | id_wykonawcy | zawartosc | dodatek          | i                                       d_konsumenta |
++--------------+---------------+--------------+-----------+------------------+--                                       -------------+
+|            1 |          1939 |            7 | bigos     | papryczka_chilli |                                                    9 |
++--------------+---------------+--------------+-----------+------------------+--                                       -------------+
+1 row in set (0.00 sec)
+
+mysql> CREATE TABLE statek (nazwa_statku VARCHAR(40) PRIMARY KEY, rodzaj_statku ENUM('byrding', 'drakkar', 'knara', 'langskip', 'sneka'), data_wodowania DATE, max_ladownosc INT UNSIGNED);
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> INSERT INTO statek (nazwa_statku, rodzaj_statku, data_wodowania, max_ladownosc) VALUES ('czarna', 'sneka', '1410-06-01', '7200');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT *FROM statek
+    -> ;
++--------------+---------------+----------------+---------------+
+| nazwa_statku | rodzaj_statku | data_wodowania | max_ladownosc |
++--------------+---------------+----------------+---------------+
+| czarna       | sneka         | 1410-06-01     |          7200 |
++--------------+---------------+----------------+---------------+
+1 row in set (0.00 sec)
+
+mysql> INSERT INTO statek (nazwa_statku, rodzaj_statku, data_wodowania, max_ladownosc) VALUES ('biala', 'drakkar', '1410-07-02', '18200');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT *FROM statek
+    -> ;
++--------------+---------------+----------------+---------------+
+| nazwa_statku | rodzaj_statku | data_wodowania | max_ladownosc |
++--------------+---------------+----------------+---------------+
+| biala        | drakkar       | 1410-07-02     |         18200 |
+| czarna       | sneka         | 1410-06-01     |          7200 |
++--------------+---------------+----------------+---------------+
+2 rows in set (0.00 sec)
+
+mysql> ALTER TABLE postacie ADD funckja VARCHAR(40);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT *FROM postacie
+    -> ;
++------------+-----------+---------+------------+------+---------+
+| id_postaci | nazwa     | rodzaj  | data_ur    | wiek | funckja |
++------------+-----------+---------+------------+------+---------+
+|          7 | bjorn     | wiking  | 1958-02-28 |   64 | NULL    |
+|          8 | drozd     | ptak    | 1410-07-15 |  612 | NULL    |
+|          9 | tesciowa  | kobieta | 1936-06-01 |   88 | NULL    |
+|         10 | bjorn     | wiking  | 1958-02-28 |   64 | NULL    |
+|         11 | bjorn     | wiking  | 1958-02-28 |   64 | NULL    |
+|         12 | Mariusz   | wiking  | NULL       | NULL | NULL    |
+|         13 | Dariusz   | wiking  | NULL       | NULL | NULL    |
+|         14 | Jedrzej   | wiking  | NULL       | NULL | NULL    |
+|         15 | Konstanty | wiking  | NULL       | NULL | NULL    |
+|         16 | Piotr     | wiking  | NULL       | NULL | NULL    |
++------------+-----------+---------+------------+------+---------+
+10 rows in set (0.00 sec)
+
+mysql> DELETE FROM postacie WHERE id_postaci=10;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> DELETE FROM postacie WHERE id_postaci=11;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT *FROM postacie
+    -> ;
++------------+-----------+---------+------------+------+---------+
+| id_postaci | nazwa     | rodzaj  | data_ur    | wiek | funckja |
++------------+-----------+---------+------------+------+---------+
+|          7 | bjorn     | wiking  | 1958-02-28 |   64 | NULL    |
+|          8 | drozd     | ptak    | 1410-07-15 |  612 | NULL    |
+|          9 | tesciowa  | kobieta | 1936-06-01 |   88 | NULL    |
+|         12 | Mariusz   | wiking  | NULL       | NULL | NULL    |
+|         13 | Dariusz   | wiking  | NULL       | NULL | NULL    |
+|         14 | Jedrzej   | wiking  | NULL       | NULL | NULL    |
+|         15 | Konstanty | wiking  | NULL       | NULL | NULL    |
+|         16 | Piotr     | wiking  | NULL       | NULL | NULL    |
++------------+-----------+---------+------------+------+---------+
+8 rows in set (0.00 sec)
+
+mysql> UPDATE postacie SET funckja = 'kapitan' WHERE id_postaci=7;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT *FROM postacie
+    -> ;
++------------+-----------+---------+------------+------+---------+
+| id_postaci | nazwa     | rodzaj  | data_ur    | wiek | funckja |
++------------+-----------+---------+------------+------+---------+
+|          7 | bjorn     | wiking  | 1958-02-28 |   64 | kapitan |
+|          8 | drozd     | ptak    | 1410-07-15 |  612 | NULL    |
+|          9 | tesciowa  | kobieta | 1936-06-01 |   88 | NULL    |
+|         12 | Mariusz   | wiking  | NULL       | NULL | NULL    |
+|         13 | Dariusz   | wiking  | NULL       | NULL | NULL    |
+|         14 | Jedrzej   | wiking  | NULL       | NULL | NULL    |
+|         15 | Konstanty | wiking  | NULL       | NULL | NULL    |
+|         16 | Piotr     | wiking  | NULL       | NULL | NULL    |
++------------+-----------+---------+------------+------+---------+
+8 rows in set (0.00 sec)
+
+mysql> ALTER TABLE postacie ADD (nazwa_statku VARCHAR(40), FOREIGN KEY(nazwa_statku) REFERENCES statek(nazwa_statku));
+Query OK, 8 rows affected (0.06 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> SELECT *FROM postacie
+    -> ;
++------------+-----------+---------+------------+------+---------+--------------+
+| id_postaci | nazwa     | rodzaj  | data_ur    | wiek | funckja | nazwa_statku |
++------------+-----------+---------+------------+------+---------+--------------+
+|          7 | bjorn     | wiking  | 1958-02-28 |   64 | kapitan | NULL         |
+|          8 | drozd     | ptak    | 1410-07-15 |  612 | NULL    | NULL         |
+|          9 | tesciowa  | kobieta | 1936-06-01 |   88 | NULL    | NULL         |
+|         12 | Mariusz   | wiking  | NULL       | NULL | NULL    | NULL         |
+|         13 | Dariusz   | wiking  | NULL       | NULL | NULL    | NULL         |
+|         14 | Jedrzej   | wiking  | NULL       | NULL | NULL    | NULL         |
+|         15 | Konstanty | wiking  | NULL       | NULL | NULL    | NULL         |
+|         16 | Piotr     | wiking  | NULL       | NULL | NULL    | NULL         |
++------------+-----------+---------+------------+------+---------+--------------+
+8 rows in set (0.00 sec)
+
+mysql> UPDATE postacie SET nazwa_statku = 'biala' WHERE id_postaci=7;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE postacie SET nazwa_statku = 'biala' WHERE id_postaci=12;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE postacie SET nazwa_statku = 'biala' WHERE id_postaci=14;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE postacie SET nazwa_statku = 'biala' WHERE id_postaci=16;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE postacie SET nazwa_statku = 'czarna' WHERE id_postaci=15;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE postacie SET nazwa_statku = 'czarna' WHERE id_postaci=13;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT *FROM postacie;
++------------+-----------+---------+------------+------+---------+--------------+
+| id_postaci | nazwa     | rodzaj  | data_ur    | wiek | funckja | nazwa_statku |
++------------+-----------+---------+------------+------+---------+--------------+
+|          7 | bjorn     | wiking  | 1958-02-28 |   64 | kapitan | biala        |
+|          8 | drozd     | ptak    | 1410-07-15 |  612 | NULL    | NULL         |
+|          9 | tesciowa  | kobieta | 1936-06-01 |   88 | NULL    | NULL         |
+|         12 | Mariusz   | wiking  | NULL       | NULL | NULL    | biala        |
+|         13 | Dariusz   | wiking  | NULL       | NULL | NULL    | czarna       |
+|         14 | Jedrzej   | wiking  | NULL       | NULL | NULL    | biala        |
+|         15 | Konstanty | wiking  | NULL       | NULL | NULL    | czarna       |
+|         16 | Piotr     | wiking  | NULL       | NULL | NULL    | biala        |
++------------+-----------+---------+------------+------+---------+--------------+
+
+
+
+mysql> DELETE FROM izba WHERE adres_budynku='podziemna 102'
+    -> ;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT *FROM izba;
+Empty set (0.00 sec)
+
+mysql> DROP TABLE izba
+    -> ;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> SELECT *FROM izba;
+ERROR 1146 (42S02): Table 'skrockim.izba' doesn't exist
