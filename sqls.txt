@@ -1,0 +1,32 @@
+create table postac(id_postaci INT PRIMARY KEY AUTO_INCREAMENT,nazwa VARCHAR(40),rodzaj ENUM('wiking','ptak','kobieta'),data_ur DATE,wiek UNSIGNED INT;
+Insert into postac (nazwa,rodzaj,data_ur,wiek) VALUES ('bjorn','wiking','2000.01.01','22');
+Insert into postac (nazwa,rodzaj,data_ur,wiek) VALUES ('tesciowa','kobieta','1935.01.01','87');
+Update postac Set wiek=88 where nazwa='tesciowa'
+
+create table walizka(id_walizki INT PRIMARY KEY AUTO_INCREAMENT,pojemnosc UNSIGNED INT,kolor ENUM('rozowy','czerwony','teczowy','zolty'),id_wlasciciela INT, FOREIGN KEY(id_wlasciciela)
+REFERENCES postac(id_postaci) ON DELETE CASCADE);
+alter table walizka alter kolor set default 'rozowy';
+insert into walizka (pojemnosc,kolor,id_wlasciciela) VALUES ('700','teczowy','1');
+insert into walizka (pojemnosc,kolor,id_wlasciciela) VALUES ('77','2');
+
+create table izba(adres_budynku VARCHAR(50),nazwa_izby VARCHAR(50),metraz USIGNED INT,wlasciciel INT, FOREIGN KEY(wlasciciel) REFERENCES postac(id_postaci);
+alter table izba add PRIMARY KEY (adres_budynku,nazwa_izby);
+alter table izba add kolor VARCHAR(40) after metraz;
+alter table izba alter kolor set default 'czarny';
+Insert into izba (adres_budynku,nazwa_izby,metraz,wlasciciel) VALUES ('tesciowej5','spizarnia','300','2');
+
+create table przetwory(id_przetworu INT PRIMARY KEY,rok_produkcji YEAR DEFAULT 1901,id_wykonawcy INT, FOREIGN KEY(id_wykonawcy) REFERENCES postac(id_postaci),zawartosc VARCHAR(40),
+dodatek VARCHAR(40) DEFAULT 'papryczka_chilli',id_konsumenta INT, FOREIGN KEY(id_konsumenta) REFERENCES postac(id_postaci));
+insert into przetwory (id_przetworu,id_wykonawcy,zawartosc,id_konsumenta) VALUES ('1','1','bigos','2');
+
+insert into postac (nazwa,rodzaj,data_ur,wiek) VALUES ('wiking1','wiking','2000.01.01','22');
+insert into postac (nazwa,rodzaj,data_ur,wiek) VALUES ('wiking2','wiking','2000.01.01','22');
+insert into postac (nazwa,rodzaj,data_ur,wiek) VALUES ('wiking4','wiking','2000.01.01','22');
+insert into postac (nazwa,rodzaj,data_ur,wiek) VALUES ('wiking3','wiking','2000.01.01','22');
+insert into postac (nazwa,rodzaj,data_ur,wiek) VALUES ('wiking5','wiking','2000.01.01','22');
+
+create table statek(nazwa_statku INT PRIMARY KEY,rodzaj_statku ENUM,data_wodowania DATE,max_ladownosc INT UNSIGNED);
+insert into statek (nazwa_statku,rodzaj_statku,data_wodowania,max_ladownosc) VALUES ('statek1','twardy','2022.01.01','700');
+insert into statek (nazwa_statku,rodzaj_statku,data_wodowania,max_ladownosc) VALUES ('statek2','twardy','2022.01.01','760');
+alter table postac add funkcja VARCHAR(40);
+update postac set funkcja=kapitan WHERE nazwa ='bjorn';
