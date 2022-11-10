@@ -1,0 +1,697 @@
+
+mysql> use zurynskip
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+Database changed
+mysql> describe postac;
++--------------+------------------------------------------+------+-----+--------                                                     -+-------+
+| Field        | Type                                     | Null | Key | Default                                                      | Extra |
++--------------+------------------------------------------+------+-----+--------                                                     -+-------+
+| id_postaci   | int                                      | NO   |     | NULL                                                         |       |
+| nazwa        | varchar(40)                              | YES  |     | NULL                                                         |       |
+| rodzaj       | enum('wiking','kobieta','ptak','syrena') | YES  |     | NULL                                                         |       |
+| data_ur      | date                                     | YES  |     | NULL                                                         |       |
+| wiek         | int unsigned                             | YES  |     | NULL                                                         |       |
+| funkcja      | varchar(40)                              | YES  |     | NULL                                                         |       |
+| nazwa_statku | varchar(40)                              | YES  | MUL | NULL                                                         |       |
+| pesel        | int                                      | NO   | PRI | NULL                                                         |       |
++--------------+------------------------------------------+------+-----+--------                                                     -+-------+
+8 rows in set (0.03 sec)
+
+mysql> mysql> describe postac;
++--------------+------------------------------------------+------+-----+---------+-------+
+| Field        | Type                                     | Null | Key | Default | Extra |
++--------------+------------------------------------------+------+-----+---------+-------+
+| id_postaci   | int                                      | NO   |     | NULL    |       |
+| nazwa        | varchar(40)                              | YES  |     | NULL    |       |
+| rodzaj       | enum('wiking','kobieta','ptak','syrena') | YES  |     | NULL    |       |
+| data_ur      | date                                     | YES  |     | NULL    |       |
+| wiek         | int unsigned                             | YES  |     | NULL    |       |
+| funkcja      | varchar(40)                              | YES  |     | NULL    |       |
+| nazwa_statku | varchar(40)                              | YES  | MUL | NULL    |       |
+| pesel        | int                                      | NO   | PRI | NULL    |       |
++--------------+------------------------------------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> describe postac;
++--------------+------------------------------------------+------+-----+---------+-------+
+| Field        | Type                                     | Null | Key | Default | Extra |
++--------------+------------------------------------------+------+-----+---------+-------+
+| id_postaci   | int                                      | NO   |     | NULL    |       |
+| nazwa        | varchar(40)                              | YES  |     | NULL    |       |
+| rodzaj       | enum('wiking','kobieta','ptak','syrena') | YES  |     | NULL    |       |
+| data_ur      | date                                     | YES  |     | NULL    |       |
+| wiek         | int unsigned                             | YES  |     | NULL    |       |
+| funkcja      | varchar(40)                              | YES  |     | NULL    |       |
+| nazwa_statku | varchar(40)                              | YES  | MUL | NULL    |       |
+| pesel        | int                                      | NO   | PRI | NULL    |       |
++--------------+------------------------------------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> desc statek;
++----------------+-------------------------+------+-----+---------+-------+
+| Field          | Type                    | Null | Key | Default | Extra |
++----------------+-------------------------+------+-----+---------+-------+
+| nazwa_statku   | varchar(40)             | NO   | PRI | NULL    |       |
+| rodzaj_statku  | enum('twardy','miekki') | YES  |     | NULL    |       |
+| data_wodowania | date                    | YES  |     | NULL    |       |
+| max_ladownosc  | int unsigned            | YES  |     | NULL    |       |
+| zaloga         | varchar(40)             | YES  |     | NULL    |       |
++----------------+-------------------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select *from postac;
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel      |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+|          1 | Bjorn               | wiking  | 1991-01-20 |   31 | kapitan | scuttleship  |     111111 |
+|         10 | Gertruda Nieszczera | syrena  | 1999-01-01 |   23 | NULL    | NULL         |   99999999 |
+|          2 | Tesciowa            | kobieta | 1936-01-15 |   88 | NULL    | NULL         | 1111111112 |
+|          3 | Drozd               | ptak    | 1410-06-17 |  612 | NULL    | scuttleship  | 1111111113 |
+|          7 | wiking1             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111119 |
+|          8 | wiking2             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111122 |
+|          9 | wiking3             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111222 |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+7 rows in set (0.00 sec)
+
+mysql> update postac set nazwa_statku='scuttleship' where nazwa ='%a%';
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> select *from postac
+    -> ;
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel      |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+|          1 | Bjorn               | wiking  | 1991-01-20 |   31 | kapitan | scuttleship  |     111111 |
+|         10 | Gertruda Nieszczera | syrena  | 1999-01-01 |   23 | NULL    | NULL         |   99999999 |
+|          2 | Tesciowa            | kobieta | 1936-01-15 |   88 | NULL    | NULL         | 1111111112 |
+|          3 | Drozd               | ptak    | 1410-06-17 |  612 | NULL    | scuttleship  | 1111111113 |
+|          7 | wiking1             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111119 |
+|          8 | wiking2             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111122 |
+|          9 | wiking3             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111222 |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+7 rows in set (0.00 sec)
+
+mysql> update postac set nazwa_statku='scuttleship' where nazwa ='a%';
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> select *from postac
+    -> ;
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel      |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+|          1 | Bjorn               | wiking  | 1991-01-20 |   31 | kapitan | scuttleship  |     111111 |
+|         10 | Gertruda Nieszczera | syrena  | 1999-01-01 |   23 | NULL    | NULL         |   99999999 |
+|          2 | Tesciowa            | kobieta | 1936-01-15 |   88 | NULL    | NULL         | 1111111112 |
+|          3 | Drozd               | ptak    | 1410-06-17 |  612 | NULL    | scuttleship  | 1111111113 |
+|          7 | wiking1             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111119 |
+|          8 | wiking2             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111122 |
+|          9 | wiking3             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111222 |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+7 rows in set (0.00 sec)
+
+mysql> update postac set nazwa_statku='scuttleship' where nazwa ='a';
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> select *from postac
+    -> ;
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel      |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+|          1 | Bjorn               | wiking  | 1991-01-20 |   31 | kapitan | scuttleship  |     111111 |
+|         10 | Gertruda Nieszczera | syrena  | 1999-01-01 |   23 | NULL    | NULL         |   99999999 |
+|          2 | Tesciowa            | kobieta | 1936-01-15 |   88 | NULL    | NULL         | 1111111112 |
+|          3 | Drozd               | ptak    | 1410-06-17 |  612 | NULL    | scuttleship  | 1111111113 |
+|          7 | wiking1             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111119 |
+|          8 | wiking2             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111122 |
+|          9 | wiking3             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111222 |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+7 rows in set (0.00 sec)
+
+mysql> update postac set nazwa_statku='scuttleship' where nazwa ='%a';
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> select *from postac
+    -> ;
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel      |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+|          1 | Bjorn               | wiking  | 1991-01-20 |   31 | kapitan | scuttleship  |     111111 |
+|         10 | Gertruda Nieszczera | syrena  | 1999-01-01 |   23 | NULL    | NULL         |   99999999 |
+|          2 | Tesciowa            | kobieta | 1936-01-15 |   88 | NULL    | NULL         | 1111111112 |
+|          3 | Drozd               | ptak    | 1410-06-17 |  612 | NULL    | scuttleship  | 1111111113 |
+|          7 | wiking1             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111119 |
+|          8 | wiking2             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111122 |
+|          9 | wiking3             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111222 |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+7 rows in set (0.00 sec)
+
+mysql> show create table postac;
++--------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table  | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
++--------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| postac | CREATE TABLE `postac` (
+  `id_postaci` int NOT NULL,
+  `nazwa` varchar(40) DEFAULT NULL,
+  `rodzaj` enum('wiking','kobieta','ptak','syrena') DEFAULT NULL,
+  `data_ur` date DEFAULT NULL,
+  `wiek` int unsigned DEFAULT NULL,
+  `funkcja` varchar(40) DEFAULT NULL,
+  `nazwa_statku` varchar(40) DEFAULT NULL,
+  `pesel` int NOT NULL,
+  PRIMARY KEY (`pesel`),
+  KEY `nazwa_statku` (`nazwa_statku`),
+  CONSTRAINT `postac_ibfk_1` FOREIGN KEY (`nazwa_statku`) REFERENCES `statek` (`nazwa_statku`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++--------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> select *from postac
+    ->
+    -> ;
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel      |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+|          1 | Bjorn               | wiking  | 1991-01-20 |   31 | kapitan | scuttleship  |     111111 |
+|         10 | Gertruda Nieszczera | syrena  | 1999-01-01 |   23 | NULL    | NULL         |   99999999 |
+|          2 | Tesciowa            | kobieta | 1936-01-15 |   88 | NULL    | NULL         | 1111111112 |
+|          3 | Drozd               | ptak    | 1410-06-17 |  612 | NULL    | scuttleship  | 1111111113 |
+|          7 | wiking1             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111119 |
+|          8 | wiking2             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111122 |
+|          9 | wiking3             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111222 |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+7 rows in set (0.00 sec)
+
+mysql> update postac set nazwa_statku='scuttleship' where nazwa LIKE '%a%';
+Query OK, 2 rows affected (0.00 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select *from postac
+    -> ;
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel      |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+|          1 | Bjorn               | wiking  | 1991-01-20 |   31 | kapitan | scuttleship  |     111111 |
+|         10 | Gertruda Nieszczera | syrena  | 1999-01-01 |   23 | NULL    | scuttleship  |   99999999 |
+|          2 | Tesciowa            | kobieta | 1936-01-15 |   88 | NULL    | scuttleship  | 1111111112 |
+|          3 | Drozd               | ptak    | 1410-06-17 |  612 | NULL    | scuttleship  | 1111111113 |
+|          7 | wiking1             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111119 |
+|          8 | wiking2             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111122 |
+|          9 | wiking3             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111222 |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+7 rows in set (0.00 sec)
+
+mysql> select *from statek;
++--------------+---------------+----------------+---------------+--------+
+| nazwa_statku | rodzaj_statku | data_wodowania | max_ladownosc | zaloga |
++--------------+---------------+----------------+---------------+--------+
+| mandarybka   | twardy        | 2022-01-01     |           210 | NULL   |
+| scuttleship  | miekki        | 2022-01-01     |           510 | NULL   |
++--------------+---------------+----------------+---------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> update statek set data_wodowania='1780.01.01' where rodzaj_statku='twardy';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+mysql> update statek set data_wodowania='1780.01.01' where rodzaj_statku='miekki';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from statek;
++--------------+---------------+----------------+---------------+--------+
+| nazwa_statku | rodzaj_statku | data_wodowania | max_ladownosc | zaloga |
++--------------+---------------+----------------+---------------+--------+
+| mandarybka   | twardy        | 1780-01-01     |           210 | NULL   |
+| scuttleship  | miekki        | 1780-01-01     |           510 | NULL   |
++--------------+---------------+----------------+---------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select *from statek;
++--------------+---------------+----------------+---------------+--------+
+| nazwa_statku | rodzaj_statku | data_wodowania | max_ladownosc | zaloga |
++--------------+---------------+----------------+---------------+--------+
+| mandarybka   | twardy        | 1780-01-01     |           210 | NULL   |
+| scuttleship  | miekki        | 1780-01-01     |           510 | NULL   |
++--------------+---------------+----------------+---------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select *from postac;
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel      |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+|          1 | Bjorn               | wiking  | 1991-01-20 |   31 | kapitan | scuttleship  |     111111 |
+|         10 | Gertruda Nieszczera | syrena  | 1999-01-01 |   23 | NULL    | scuttleship  |   99999999 |
+|          2 | Tesciowa            | kobieta | 1936-01-15 |   88 | NULL    | scuttleship  | 1111111112 |
+|          3 | Drozd               | ptak    | 1410-06-17 |  612 | NULL    | scuttleship  | 1111111113 |
+|          7 | wiking1             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111119 |
+|          8 | wiking2             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111122 |
+|          9 | wiking3             | NULL    | NULL       | NULL | NULL    | scuttleship  | 1111111222 |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+7 rows in set (0.00 sec)
+
+mysql> update postac set rodzaj='wiking' where id_postaci='7';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set rodzaj='wiking' where id_postaci='8';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set rodzaj='wiking' where id_postaci='9';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from postac;
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel      |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+|          1 | Bjorn               | wiking  | 1991-01-20 |   31 | kapitan | scuttleship  |     111111 |
+|         10 | Gertruda Nieszczera | syrena  | 1999-01-01 |   23 | NULL    | scuttleship  |   99999999 |
+|          2 | Tesciowa            | kobieta | 1936-01-15 |   88 | NULL    | scuttleship  | 1111111112 |
+|          3 | Drozd               | ptak    | 1410-06-17 |  612 | NULL    | scuttleship  | 1111111113 |
+|          7 | wiking1             | wiking  | NULL       | NULL | NULL    | scuttleship  | 1111111119 |
+|          8 | wiking2             | wiking  | NULL       | NULL | NULL    | scuttleship  | 1111111122 |
+|          9 | wiking3             | wiking  | NULL       | NULL | NULL    | scuttleship  | 1111111222 |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+7 rows in set (0.00 sec)
+
+mysql> update postac set data_ur='1700.01.01' where id_postaci='9';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set data_ur='1700.01.01' where id_postaci='8';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set data_ur='1700.01.01' where id_postaci='7';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set wiek=222 where id_postaci='7';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set wiek=222 where id_postaci='8';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set wiek=222 where id_postaci='9';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from postac;
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel      |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+|          1 | Bjorn               | wiking  | 1991-01-20 |   31 | kapitan | scuttleship  |     111111 |
+|         10 | Gertruda Nieszczera | syrena  | 1999-01-01 |   23 | NULL    | scuttleship  |   99999999 |
+|          2 | Tesciowa            | kobieta | 1936-01-15 |   88 | NULL    | scuttleship  | 1111111112 |
+|          3 | Drozd               | ptak    | 1410-06-17 |  612 | NULL    | scuttleship  | 1111111113 |
+|          7 | wiking1             | wiking  | 1700-01-01 |  222 | NULL    | scuttleship  | 1111111119 |
+|          8 | wiking2             | wiking  | 1700-01-01 |  222 | NULL    | scuttleship  | 1111111122 |
+|          9 | wiking3             | wiking  | 1700-01-01 |  222 | NULL    | scuttleship  | 1111111222 |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+7 rows in set (0.00 sec)
+
+mysql> alter table postac add check (wiek<1000);
+Query OK, 7 rows affected (0.05 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> select *from postac;
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel      |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+|          1 | Bjorn               | wiking  | 1991-01-20 |   31 | kapitan | scuttleship  |     111111 |
+|         10 | Gertruda Nieszczera | syrena  | 1999-01-01 |   23 | NULL    | scuttleship  |   99999999 |
+|          2 | Tesciowa            | kobieta | 1936-01-15 |   88 | NULL    | scuttleship  | 1111111112 |
+|          3 | Drozd               | ptak    | 1410-06-17 |  612 | NULL    | scuttleship  | 1111111113 |
+|          7 | wiking1             | wiking  | 1700-01-01 |  222 | NULL    | scuttleship  | 1111111119 |
+|          8 | wiking2             | wiking  | 1700-01-01 |  222 | NULL    | scuttleship  | 1111111122 |
+|          9 | wiking3             | wiking  | 1700-01-01 |  222 | NULL    | scuttleship  | 1111111222 |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+7 rows in set (0.00 sec)
+
+mysql> insert into postac (id_postaci,nazwa,data_ur,wiek,pesel) values ('11','waz_loko','2022.01.01','1','777777');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select *from postac;
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel      |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+|          1 | Bjorn               | wiking  | 1991-01-20 |   31 | kapitan | scuttleship  |     111111 |
+|         11 | waz_loko            | NULL    | 2022-01-01 |    1 | NULL    | NULL         |     777777 |
+|         10 | Gertruda Nieszczera | syrena  | 1999-01-01 |   23 | NULL    | scuttleship  |   99999999 |
+|          2 | Tesciowa            | kobieta | 1936-01-15 |   88 | NULL    | scuttleship  | 1111111112 |
+|          3 | Drozd               | ptak    | 1410-06-17 |  612 | NULL    | scuttleship  | 1111111113 |
+|          7 | wiking1             | wiking  | 1700-01-01 |  222 | NULL    | scuttleship  | 1111111119 |
+|          8 | wiking2             | wiking  | 1700-01-01 |  222 | NULL    | scuttleship  | 1111111122 |
+|          9 | wiking3             | wiking  | 1700-01-01 |  222 | NULL    | scuttleship  | 1111111222 |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+8 rows in set (0.00 sec)
+
+mysql> select *from postac;
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel      |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+|          1 | Bjorn               | wiking  | 1991-01-20 |   31 | kapitan | scuttleship  |     111111 |
+|         11 | waz_loko            | NULL    | 2022-01-01 |    1 | NULL    | NULL         |     777777 |
+|         10 | Gertruda Nieszczera | syrena  | 1999-01-01 |   23 | NULL    | scuttleship  |   99999999 |
+|          2 | Tesciowa            | kobieta | 1936-01-15 |   88 | NULL    | scuttleship  | 1111111112 |
+|          3 | Drozd               | ptak    | 1410-06-17 |  612 | NULL    | scuttleship  | 1111111113 |
+|          7 | wiking1             | wiking  | 1700-01-01 |  222 | NULL    | scuttleship  | 1111111119 |
+|          8 | wiking2             | wiking  | 1700-01-01 |  222 | NULL    | scuttleship  | 1111111122 |
+|          9 | wiking3             | wiking  | 1700-01-01 |  222 | NULL    | scuttleship  | 1111111222 |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+8 rows in set (0.00 sec)
+
+mysql> create table marynarz as select *from postac;
+Query OK, 8 rows affected (0.03 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> select *from marynarz;
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel      |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+|          1 | Bjorn               | wiking  | 1991-01-20 |   31 | kapitan | scuttleship  |     111111 |
+|         11 | waz_loko            | NULL    | 2022-01-01 |    1 | NULL    | NULL         |     777777 |
+|         10 | Gertruda Nieszczera | syrena  | 1999-01-01 |   23 | NULL    | scuttleship  |   99999999 |
+|          2 | Tesciowa            | kobieta | 1936-01-15 |   88 | NULL    | scuttleship  | 1111111112 |
+|          3 | Drozd               | ptak    | 1410-06-17 |  612 | NULL    | scuttleship  | 1111111113 |
+|          7 | wiking1             | wiking  | 1700-01-01 |  222 | NULL    | scuttleship  | 1111111119 |
+|          8 | wiking2             | wiking  | 1700-01-01 |  222 | NULL    | scuttleship  | 1111111122 |
+|          9 | wiking3             | wiking  | 1700-01-01 |  222 | NULL    | scuttleship  | 1111111222 |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+8 rows in set (0.01 sec)
+
+mysql> drop table marynarz;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table marynarz like postac;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> select *from marynarz;
+Empty set (0.01 sec)
+
+mysql> drop table marynarz;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table marynarz as select *from postac where nazwa_statku='scuttleship';
+Query OK, 7 rows affected (0.02 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> select *from marynarz;
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel      |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+|          1 | Bjorn               | wiking  | 1991-01-20 |   31 | kapitan | scuttleship  |     111111 |
+|         10 | Gertruda Nieszczera | syrena  | 1999-01-01 |   23 | NULL    | scuttleship  |   99999999 |
+|          2 | Tesciowa            | kobieta | 1936-01-15 |   88 | NULL    | scuttleship  | 1111111112 |
+|          3 | Drozd               | ptak    | 1410-06-17 |  612 | NULL    | scuttleship  | 1111111113 |
+|          7 | wiking1             | wiking  | 1700-01-01 |  222 | NULL    | scuttleship  | 1111111119 |
+|          8 | wiking2             | wiking  | 1700-01-01 |  222 | NULL    | scuttleship  | 1111111122 |
+|          9 | wiking3             | wiking  | 1700-01-01 |  222 | NULL    | scuttleship  | 1111111222 |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+7 rows in set (0.01 sec)
+
+mysql> drop table marynarz;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select *from statek;
++--------------+---------------+----------------+---------------+--------+
+| nazwa_statku | rodzaj_statku | data_wodowania | max_ladownosc | zaloga |
++--------------+---------------+----------------+---------------+--------+
+| mandarybka   | twardy        | 1780-01-01     |           210 | NULL   |
+| scuttleship  | miekki        | 1780-01-01     |           510 | NULL   |
++--------------+---------------+----------------+---------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> update postac set nazwa_statku='mandarybka' where id_postaci='7';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set nazwa_statku='mandarybka' where id_postaci='8';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set nazwa_statku='mandarybka' where id_postaci='9';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> create table marynarz as select *from postac where nazwa_statku='scuttleship,mandarybka';
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select *from marynarz;
+Empty set (0.00 sec)
+
+mysql> drop table marynarz;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select *from postac;
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel      |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+|          1 | Bjorn               | wiking  | 1991-01-20 |   31 | kapitan | scuttleship  |     111111 |
+|         11 | waz_loko            | NULL    | 2022-01-01 |    1 | NULL    | NULL         |     777777 |
+|         10 | Gertruda Nieszczera | syrena  | 1999-01-01 |   23 | NULL    | scuttleship  |   99999999 |
+|          2 | Tesciowa            | kobieta | 1936-01-15 |   88 | NULL    | scuttleship  | 1111111112 |
+|          3 | Drozd               | ptak    | 1410-06-17 |  612 | NULL    | scuttleship  | 1111111113 |
+|          7 | wiking1             | wiking  | 1700-01-01 |  222 | NULL    | mandarybka   | 1111111119 |
+|          8 | wiking2             | wiking  | 1700-01-01 |  222 | NULL    | mandarybka   | 1111111122 |
+|          9 | wiking3             | wiking  | 1700-01-01 |  222 | NULL    | mandarybka   | 1111111222 |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+8 rows in set (0.00 sec)
+
+mysql> create table marynarz like postac;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> insert into marynarz (id_postaci,nazwa,rodzaj,data_ur,wiek,funkcja,nazwa_statku,pesel) SELECT *from postac where nazwa_statku IS NOT NULL;
+Query OK, 7 rows affected (0.01 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> select *from marynarz;
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel      |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+|          1 | Bjorn               | wiking  | 1991-01-20 |   31 | kapitan | scuttleship  |     111111 |
+|         10 | Gertruda Nieszczera | syrena  | 1999-01-01 |   23 | NULL    | scuttleship  |   99999999 |
+|          2 | Tesciowa            | kobieta | 1936-01-15 |   88 | NULL    | scuttleship  | 1111111112 |
+|          3 | Drozd               | ptak    | 1410-06-17 |  612 | NULL    | scuttleship  | 1111111113 |
+|          7 | wiking1             | wiking  | 1700-01-01 |  222 | NULL    | mandarybka   | 1111111119 |
+|          8 | wiking2             | wiking  | 1700-01-01 |  222 | NULL    | mandarybka   | 1111111122 |
+|          9 | wiking3             | wiking  | 1700-01-01 |  222 | NULL    | mandarybka   | 1111111222 |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+7 rows in set (0.00 sec)
+
+mysql> show create table marynarz;
++----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table    | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
++----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| marynarz | CREATE TABLE `marynarz` (
+  `id_postaci` int NOT NULL,
+  `nazwa` varchar(40) DEFAULT NULL,
+  `rodzaj` enum('wiking','kobieta','ptak','syrena') DEFAULT NULL,
+  `data_ur` date DEFAULT NULL,
+  `wiek` int unsigned DEFAULT NULL,
+  `funkcja` varchar(40) DEFAULT NULL,
+  `nazwa_statku` varchar(40) DEFAULT NULL,
+  `pesel` int NOT NULL,
+  PRIMARY KEY (`pesel`),
+  KEY `nazwa_statku` (`nazwa_statku`),
+  CONSTRAINT `marynarz_chk_1` CHECK ((`wiek` < 1000))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++----------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> describe marynarz;
++--------------+------------------------------------------+------+-----+---------+-------+
+| Field        | Type                                     | Null | Key | Default | Extra |
++--------------+------------------------------------------+------+-----+---------+-------+
+| id_postaci   | int                                      | NO   |     | NULL    |       |
+| nazwa        | varchar(40)                              | YES  |     | NULL    |       |
+| rodzaj       | enum('wiking','kobieta','ptak','syrena') | YES  |     | NULL    |       |
+| data_ur      | date                                     | YES  |     | NULL    |       |
+| wiek         | int unsigned                             | YES  |     | NULL    |       |
+| funkcja      | varchar(40)                              | YES  |     | NULL    |       |
+| nazwa_statku | varchar(40)                              | YES  | MUL | NULL    |       |
+| pesel        | int                                      | NO   | PRI | NULL    |       |
++--------------+------------------------------------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> create table zwierz (id INT PRIMARY KEY AUTO_INCREMENT,nazwa VARCHAR(40),wiek INT UNSIGNED);
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> alter table postac  modify rodzaj ENUM ('wiking','kobieta','ptak','syrena','waz');
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select *from postac;
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel      |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+|          1 | Bjorn               | wiking  | 1991-01-20 |   31 | kapitan | scuttleship  |     111111 |
+|         11 | waz_loko            | NULL    | 2022-01-01 |    1 | NULL    | NULL         |     777777 |
+|         10 | Gertruda Nieszczera | syrena  | 1999-01-01 |   23 | NULL    | scuttleship  |   99999999 |
+|          2 | Tesciowa            | kobieta | 1936-01-15 |   88 | NULL    | scuttleship  | 1111111112 |
+|          3 | Drozd               | ptak    | 1410-06-17 |  612 | NULL    | scuttleship  | 1111111113 |
+|          7 | wiking1             | wiking  | 1700-01-01 |  222 | NULL    | mandarybka   | 1111111119 |
+|          8 | wiking2             | wiking  | 1700-01-01 |  222 | NULL    | mandarybka   | 1111111122 |
+|          9 | wiking3             | wiking  | 1700-01-01 |  222 | NULL    | mandarybka   | 1111111222 |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+8 rows in set (0.00 sec)
+
+
+mysql> update postac set rodzaj='waz' where id_postaci ='11';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from postac;
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel      |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+|          1 | Bjorn               | wiking  | 1991-01-20 |   31 | kapitan | scuttleship  |     111111 |
+|         11 | waz_loko            | waz     | 2022-01-01 |    1 | NULL    | NULL         |     777777 |
+|         10 | Gertruda Nieszczera | syrena  | 1999-01-01 |   23 | NULL    | scuttleship  |   99999999 |
+|          2 | Tesciowa            | kobieta | 1936-01-15 |   88 | NULL    | scuttleship  | 1111111112 |
+|          3 | Drozd               | ptak    | 1410-06-17 |  612 | NULL    | scuttleship  | 1111111113 |
+|          7 | wiking1             | wiking  | 1700-01-01 |  222 | NULL    | mandarybka   | 1111111119 |
+|          8 | wiking2             | wiking  | 1700-01-01 |  222 | NULL    | mandarybka   | 1111111122 |
+|          9 | wiking3             | wiking  | 1700-01-01 |  222 | NULL    | mandarybka   | 1111111222 |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+8 rows in set (0.00 sec)
+
+mysql> select *from postac;
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel      |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+|          1 | Bjorn               | wiking  | 1991-01-20 |   31 | kapitan | scuttleship  |     111111 |
+|         11 | waz_loko            | waz     | 2022-01-01 |    1 | NULL    | NULL         |     777777 |
+|         10 | Gertruda Nieszczera | syrena  | 1999-01-01 |   23 | NULL    | scuttleship  |   99999999 |
+|          2 | Tesciowa            | kobieta | 1936-01-15 |   88 | NULL    | scuttleship  | 1111111112 |
+|          3 | Drozd               | ptak    | 1410-06-17 |  612 | NULL    | scuttleship  | 1111111113 |
+|          7 | wiking1             | wiking  | 1700-01-01 |  222 | NULL    | mandarybka   | 1111111119 |
+|          8 | wiking2             | wiking  | 1700-01-01 |  222 | NULL    | mandarybka   | 1111111122 |
+|          9 | wiking3             | wiking  | 1700-01-01 |  222 | NULL    | mandarybka   | 1111111222 |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+8 rows in set (0.00 sec)
+
+mysql> update marynarz set nazwa_statku=null where nazwa_statku IS NOT NULL;
+Query OK, 7 rows affected (0.00 sec)
+Rows matched: 7  Changed: 7  Warnings: 0
+
+mysql> select *from marynarz;
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel      |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+|          1 | Bjorn               | wiking  | 1991-01-20 |   31 | kapitan | NULL         |     111111 |
+|         10 | Gertruda Nieszczera | syrena  | 1999-01-01 |   23 | NULL    | NULL         |   99999999 |
+|          2 | Tesciowa            | kobieta | 1936-01-15 |   88 | NULL    | NULL         | 1111111112 |
+|          3 | Drozd               | ptak    | 1410-06-17 |  612 | NULL    | NULL         | 1111111113 |
+|          7 | wiking1             | wiking  | 1700-01-01 |  222 | NULL    | NULL         | 1111111119 |
+|          8 | wiking2             | wiking  | 1700-01-01 |  222 | NULL    | NULL         | 1111111122 |
+|          9 | wiking3             | wiking  | 1700-01-01 |  222 | NULL    | NULL         | 1111111222 |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+7 rows in set (0.00 sec)
+
+mysql> delete from marynarz where id_postaci ='9';
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select *from marynarz;
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel      |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+|          1 | Bjorn               | wiking  | 1991-01-20 |   31 | kapitan | NULL         |     111111 |
+|         10 | Gertruda Nieszczera | syrena  | 1999-01-01 |   23 | NULL    | NULL         |   99999999 |
+|          2 | Tesciowa            | kobieta | 1936-01-15 |   88 | NULL    | NULL         | 1111111112 |
+|          3 | Drozd               | ptak    | 1410-06-17 |  612 | NULL    | NULL         | 1111111113 |
+|          7 | wiking1             | wiking  | 1700-01-01 |  222 | NULL    | NULL         | 1111111119 |
+|          8 | wiking2             | wiking  | 1700-01-01 |  222 | NULL    | NULL         | 1111111122 |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+6 rows in set (0.00 sec)
+
+mysql> show create table statek;
++--------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table  | Create Table                                                                                                                                                                                                                                                                                                                                     |
++--------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| statek | CREATE TABLE `statek` (
+  `nazwa_statku` varchar(40) NOT NULL,
+  `rodzaj_statku` enum('twardy','miekki') DEFAULT NULL,
+  `data_wodowania` date DEFAULT NULL,
+  `max_ladownosc` int unsigned DEFAULT NULL,
+  `zaloga` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`nazwa_statku`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++--------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
++--------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table  | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
++--------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| postac | CREATE TABLE `postac` (
+  `id_postaci` int NOT NULL,
+  `nazwa` varchar(40) DEFAULT NULL,
+  `rodzaj` enum('wiking','kobieta','ptak','syrena','waz') DEFAULT NULL,
+  `data_ur` date DEFAULT NULL,
+  `wiek` int unsigned DEFAULT NULL,
+  `funkcja` varchar(40) DEFAULT NULL,
+  `nazwa_statku` varchar(40) DEFAULT NULL,
+  `pesel` int NOT NULL,
+  PRIMARY KEY (`pesel`),
+  KEY `nazwa_statku` (`nazwa_statku`),
+  CONSTRAINT `postac_ibfk_1` FOREIGN KEY (`nazwa_statku`) REFERENCES `statek` (`nazwa_statku`),
+  CONSTRAINT `postac_chk_1` CHECK ((`wiek` < 1000))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++--------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> alter table postac drop foreign key postac_ibfk_1;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> drop table statek;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select *from zwierz;
+Empty set (0.00 sec)
+
+mysql> show create table zwierz;
++--------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table  | Create Table                                                                                                                                                                                                                |
++--------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| zwierz | CREATE TABLE `zwierz` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nazwa` varchar(40) DEFAULT NULL,
+  `wiek` int unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++--------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> insert into zwierz (nazwa,wiek) values ('drozd','612');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into zwierz (nazwa,wiek) values ('waz_loko','1');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from postac;
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel      |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+|          1 | Bjorn               | wiking  | 1991-01-20 |   31 | kapitan | scuttleship  |     111111 |
+|         11 | waz_loko            | waz     | 2022-01-01 |    1 | NULL    | NULL         |     777777 |
+|         10 | Gertruda Nieszczera | syrena  | 1999-01-01 |   23 | NULL    | scuttleship  |   99999999 |
+|          2 | Tesciowa            | kobieta | 1936-01-15 |   88 | NULL    | scuttleship  | 1111111112 |
+|          3 | Drozd               | ptak    | 1410-06-17 |  612 | NULL    | scuttleship  | 1111111113 |
+|          7 | wiking1             | wiking  | 1700-01-01 |  222 | NULL    | mandarybka   | 1111111119 |
+|          8 | wiking2             | wiking  | 1700-01-01 |  222 | NULL    | mandarybka   | 1111111122 |
+|          9 | wiking3             | wiking  | 1700-01-01 |  222 | NULL    | mandarybka   | 1111111222 |
++------------+---------------------+---------+------------+------+---------+--------------+------------+
+8 rows in set (0.00 sec)
+
+mysql> insert into zwierz (nazwa,wiek) values ('Gertruda Nieszczera','23');
+Query OK, 1 row affected (0.01 sec)
+
