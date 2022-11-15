@@ -3,3 +3,292 @@ Query OK, 1 row affected (0.00 sec)
 
 mysql> delete from postac where id_postaci='5';
 Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from postac;
++------------+----------+---------+------------+------+---------+--------------+
+| id_postaci | nazwa    | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku |
++------------+----------+---------+------------+------+---------+--------------+
+|          1 | Bjorn    | wiking  | 1920-07-12 |  102 | kapitan | czarna_perla |
+|          2 | Drozd    | ptak    | 1410-06-25 |  612 | NULL    | czarna_perla |
+|          3 | Tesciowa | kobieta | 1935-01-01 |   88 | NULL    | NULL         |
+|          6 | Franek   | wiking  | 1822-09-13 |  200 | NULL    | titanic      |
+|          7 | Sebek    | wiking  | 1700-01-01 |  322 | NULL    | czarna_perla |
+|          8 | Heniu    | wiking  | 1600-01-01 |  422 | NULL    | czarna_perla |
++------------+----------+---------+------------+------+---------+--------------+
+6 rows in set (0.00 sec)
+
+mysql> show create table walizka;
+| walizka | CREATE TABLE `walizka` (
+  `id_walizki` int NOT NULL AUTO_INCREMENT,
+  `pojemnosc` int unsigned DEFAULT NULL,
+  `kolor` enum('rozowy','czerwony','teczowy','zolty') DEFAULT 'rozowy',
+  `id_wlasciciela` int DEFAULT NULL,
+  PRIMARY KEY (`id_walizki`),
+  KEY `id_wlasciciela` (`id_wlasciciela`),
+  CONSTRAINT `walizka_ibfk_1` FOREIGN KEY (`id_wlasciciela`) REFERENCES `postac` (`id_postaci`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
+1 row in set (0.00 sec)
+
+mysql> show create table przetwory;
+| przetwory | CREATE TABLE `przetwory` (
+  `id_przetworu` int NOT NULL,
+  `rok_produkcji` year NOT NULL DEFAULT (year(((1654 - 1) - 1))),
+  `id_wykonawcy` int DEFAULT NULL,
+  `zawartosc` varchar(40) DEFAULT NULL,
+  `dodatek` varchar(40) DEFAULT 'papryczka_chilli',
+  `id_konsumenta` int DEFAULT NULL,
+  PRIMARY KEY (`id_przetworu`),
+  KEY `id_wykonawcy` (`id_wykonawcy`),
+  KEY `id_konsumenta` (`id_konsumenta`),
+  CONSTRAINT `przetwory_ibfk_1` FOREIGN KEY (`id_wykonawcy`) REFERENCES `postac` (`id_postaci`),
+  CONSTRAINT `przetwory_ibfk_2` FOREIGN KEY (`id_konsumenta`) REFERENCES `postac` (`id_postaci`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
+1 row in set (0.03 sec)
+
+mysql> show create table statek;                                                             
+| statek | CREATE TABLE `statek` (
+  `nazwa_statku` varchar(50) NOT NULL,
+  `rodzaj_statku` enum('handlowy','wikingowy','pasazerski') DEFAULT NULL,
+  `data_wodowania` date DEFAULT NULL,
+  `max_ladownosc` int unsigned DEFAULT NULL,
+  PRIMARY KEY (`nazwa_statku`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
+1 row in set (0.00 sec)
+
+mysql> alter table przetwory drop foreign key przetwory_ibfk_1;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table przetwory drop foreign key przetwory_ibfk_2;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table walizka drop foreign key walizka_ibfk_1;
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table postac modify id_postaci INT NOT NULL;
+Query OK, 6 rows affected (0.05 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> alter table postac drop primary key;
+Query OK, 6 rows affected (0.06 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+
+
+
+mysql> alter table postac add (pesel INT(11));
+Query OK, 0 rows affected, 1 warning (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> update postac set pesel=1112332 where id_postaci='1';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set pesel=111 where id_postaci='2';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set pesel=1112222 where id_postaci='3';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set pesel=1132222 where id_postaci='6';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set pesel=1132242 where id_postaci='7';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set pesel=1138242 where id_postaci='8';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> alter table postac modify pesel INT(11) NOT NULL;
+Query OK, 0 rows affected, 1 warning (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> alter table postac modify pesel INT(11) NOT NULL PRIMARY KEY;
+Query OK, 0 rows affected, 1 warning (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 1
+
+mysql> select *from postac;
++------------+----------+---------+------------+------+---------+--------------+---------+
+| id_postaci | nazwa    | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel   |
++------------+----------+---------+------------+------+---------+--------------+---------+
+|          1 | Bjorn    | wiking  | 1920-07-12 |  102 | kapitan | czarna_perla |    NULL |
+|          2 | Drozd    | ptak    | 1410-06-25 |  612 | NULL    | czarna_perla |     111 |
+|          3 | Tesciowa | kobieta | 1935-01-01 |   88 | NULL    | NULL         | 1112222 |
+|          6 | Franek   | wiking  | 1822-09-13 |  200 | NULL    | titanic      | 1132222 |
+|          7 | Sebek    | wiking  | 1700-01-01 |  322 | NULL    | czarna_perla | 1132242 |
+|          8 | Heniu    | wiking  | 1600-01-01 |  422 | NULL    | czarna_perla | 1138242 |
++------------+----------+---------+------------+------+---------+--------------+---------+
+6 rows in set (0.00 sec)
+
+mysql> desc postac;
++--------------+---------------------------------+------+-----+---------+-------+
+| Field        | Type                            | Null | Key | Default | Extra |
++--------------+---------------------------------+------+-----+---------+-------+
+| id_postaci   | int                             | NO   |     | NULL    |       |
+| nazwa        | varchar(40)                     | YES  |     | NULL    |       |
+| rodzaj       | enum('wiking','ptak','kobieta') | YES  |     | NULL    |       |
+| data_ur      | date                            | YES  |     | NULL    |       |
+| wiek         | int unsigned                    | YES  |     | NULL    |       |
+| funkcja      | varchar(50)                     | YES  |     | NULL    |       |
+| nazwa_statku | varchar(40)                     | YES  | MUL | NULL    |       |
+| pesel        | int                             | NO   | PRI | NULL    |       |
++--------------+---------------------------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+
+mysql> alter table postac modify rodzaj ENUM('wiking','ptak','kobieta','syrena');
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into postac (id_postaci,nazwa,rodzaj,data_ur,wiek,pesel) VALUES ('4','Gertruda_Nieszczera','syren
+a','2000-01-01','22','798431');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from postac;
++------------+---------------------+---------+------------+------+---------+--------------+---------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel   |
++------------+---------------------+---------+------------+------+---------+--------------+---------+
+|          2 | Drozd               | ptak    | 1410-06-25 |  612 | NULL    | czarna_perla |     111 |
+|          4 | Gertruda_Nieszczera | syrena  | 2000-01-01 |   22 | NULL    | NULL         |  798431 |
+|          3 | Tesciowa            | kobieta | 1935-01-01 |   88 | NULL    | NULL         | 1112222 |
+|          1 | Bjorn               | wiking  | 1920-07-12 |  102 | kapitan | czarna_perla | 1112332 |
+|          6 | Franek              | wiking  | 1822-09-13 |  200 | NULL    | titanic      | 1132222 |
+|          7 | Sebek               | wiking  | 1700-01-01 |  322 | NULL    | czarna_perla | 1132242 |
+|          8 | Heniu               | wiking  | 1600-01-01 |  422 | NULL    | czarna_perla | 1138242 |
++------------+---------------------+---------+------------+------+---------+--------------+---------+
+7 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+mysql> update postac set nazwa_statku='czarna_perla' where nazwa LIKE '%a%';
+Query OK, 3 rows affected (0.01 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+mysql> select *from postac;
++------------+---------------------+---------+------------+------+---------+--------------+---------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel   |
++------------+---------------------+---------+------------+------+---------+--------------+---------+
+|          2 | Drozd               | ptak    | 1410-06-25 |  612 | NULL    | czarna_perla |     111 |
+|          4 | Gertruda_Nieszczera | syrena  | 2000-01-01 |   22 | NULL    | czarna_perla |  798431 |
+|          3 | Tesciowa            | kobieta | 1935-01-01 |   88 | NULL    | czarna_perla | 1112222 |
+|          1 | Bjorn               | wiking  | 1920-07-12 |  102 | kapitan | czarna_perla | 1112332 |
+|          6 | Franek              | wiking  | 1822-09-13 |  200 | NULL    | czarna_perla | 1132222 |
+|          7 | Sebek               | wiking  | 1700-01-01 |  322 | NULL    | czarna_perla | 1132242 |
+|          8 | Heniu               | wiking  | 1600-01-01 |  422 | NULL    | czarna_perla | 1138242 |
++------------+---------------------+---------+------------+------+---------+--------------+---------+
+7 rows in set (0.00 sec)
+
+mysql> update statek set max_ladownosc=(max_ladownosc*(70/100)) WHERE data_wodowania<'1999-01-01';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from statek;
++--------------+---------------+----------------+---------------+
+| nazwa_statku | rodzaj_statku | data_wodowania | max_ladownosc |
++--------------+---------------+----------------+---------------+
+| czarna_perla | wikingowy     | 2004-01-08     |         15000 |
+| titanic      | pasazerski    | 1912-04-15     |         32430 |
++--------------+---------------+----------------+---------------+
+2 rows in set (0.00 sec)
+
+mysql> alter table postac add check(wiek<1000);
+Query OK, 7 rows affected (0.10 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> select *from postac;
++------------+---------------------+---------+------------+------+---------+--------------+---------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel   |
++------------+---------------------+---------+------------+------+---------+--------------+---------+
+|          2 | Drozd               | ptak    | 1410-06-25 |  612 | NULL    | czarna_perla |     111 |
+|          4 | Gertruda_Nieszczera | syrena  | 2000-01-01 |   22 | NULL    | czarna_perla |  798431 |
+|          3 | Tesciowa            | kobieta | 1935-01-01 |   88 | NULL    | czarna_perla | 1112222 |
+|          1 | Bjorn               | wiking  | 1920-07-12 |  102 | kapitan | czarna_perla | 1112332 |
+|          6 | Franek              | wiking  | 1822-09-13 |  200 | NULL    | czarna_perla | 1132222 |
+|          7 | Sebek               | wiking  | 1700-01-01 |  322 | NULL    | czarna_perla | 1132242 |
+|          8 | Heniu               | wiking  | 1600-01-01 |  422 | NULL    | czarna_perla | 1138242 |
++------------+---------------------+---------+------------+------+---------+--------------+---------+
+7 rows in set (0.00 sec)
+
+
+
+mysql> insert into postac (id_postaci,nazwa,data_ur,wiek,pesel) VALUES ('5','LOKO','2022-01-01','1','321');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> create table marynarze like postac;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> insert into marynarze (id_postaci,nazwa,rodzaj,data_ur,wiek,funkcja,nazwa_statku,pesel) SELECT *from postac where nazwa_statku IS NOT NULL;
+Query OK, 7 rows affected (0.08 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> select *from marynarze;
++------------+---------------------+---------+------------+------+---------+--------------+---------+
+| id_postaci | nazwa               | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku | pesel   |
++------------+---------------------+---------+------------+------+---------+--------------+---------+
+|          2 | Drozd               | ptak    | 1410-06-25 |  612 | NULL    | czarna_perla |     111 |
+|          4 | Gertruda_Nieszczera | syrena  | 2000-01-01 |   22 | NULL    | czarna_perla |  798431 |
+|          3 | Tesciowa            | kobieta | 1935-01-01 |   88 | NULL    | czarna_perla | 1112222 |
+|          1 | Bjorn               | wiking  | 1920-07-12 |  102 | kapitan | czarna_perla | 1112332 |
+|          6 | Franek              | wiking  | 1822-09-13 |  200 | NULL    | czarna_perla | 1132222 |
+|          7 | Sebek               | wiking  | 1700-01-01 |  322 | NULL    | czarna_perla | 1132242 |
+|          8 | Heniu               | wiking  | 1600-01-01 |  422 | NULL    | czarna_perla | 1138242 |
++------------+---------------------+---------+------------+------+---------+--------------+---------+
+7 rows in set (0.00 sec)
+
+
+
+mysql> update postac set nazwa_statku=null where nazwa_statku IS NOT NULL;
+Query OK, 7 rows affected (0.01 sec)
+Rows matched: 7  Changed: 7  Warnings: 0
+
+mysql> delete from marynarze where id_postaci='8';
+Query OK, 1 row affected (0.00 sec)
+
+mysql> delete from statek where nazwa_statku='titanic';
+Query OK, 1 row affected (0.00 sec)
+
+mysql> delete from statek where nazwa_statku='czarna_perla';
+Query OK, 1 row affected (0.00 sec)
+
+mysql> alter table postac drop foreign key postac_ibfk_1;
+Query OK, 0 rows affected (0.34 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> drop table statek;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> create table zwierz(id INT PRIMARY KEY AUTO_INCREMENT,nazwa VARCHAR(40),wiek INT);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> insert into zwierz (nazwa,wiek) VALUES ('drozd','612');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into zwierz (nazwa,wiek) VALUES ('Gertruda_Nieszczera','22');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into zwierz (nazwa,wiek) VALUES ('LOKO','1');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select *from zwierz;
++----+---------------------+------+
+| id | nazwa               | wiek |
++----+---------------------+------+
+|  1 | drozd               |  612 |
+|  2 | Gertruda_Nieszczera |   22 |
+|  3 | LOKO                |    1 |
++----+---------------------+------+
+3 rows in set (0.00 sec)
