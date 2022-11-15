@@ -1,0 +1,189 @@
+mysql> create table postac (id_postaci INT PRIMARY KEY AUTO_INCREMENT, nazwa VARCHAR(40), rodzaj ENUM('wiking', 'ptak', 'kobieta'), data_ur DATE, wiek INT UNSIGNED);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> insert into postac (nazwa,rodzaj,data_ur,wiek) VALUES ('Bjorn','wiking','1920-07-12','102');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into postac (nazwa,rodzaj,data_ur,wiek) VALUES ('Drozd','ptak','1410-06-25','612');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into postac (nazwa,rodzaj,data_ur,wiek) VALUES ('Tesciowa','kobieta','1935-01-01','87');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> update postac set wiek=88 where id_postaci='3';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from postac;
++------------+----------+---------+------------+------+
+| id_postaci | nazwa    | rodzaj  | data_ur    | wiek |
++------------+----------+---------+------------+------+
+|          1 | Bjorn    | wiking  | 1920-07-12 |  102 |
+|          2 | Drozd    | ptak    | 1410-06-25 |  612 |
+|          3 | Tesciowa | kobieta | 1935-01-01 |   88 |
++------------+----------+---------+------------+------+
+3 rows in set (0.00 sec)
+
+
+create table walizka(id_walizki INT PRIMARY KEY AUTO_INCREMENT,pojemnosc INT UNSIGNED,kolor ENUM('rozowy','czerwony','teczowy','zolty'),id_wlasciciela INT, FOREIGN KEY(id_wlasciciela) REFERENCES postac(id_postaci) ON DELETE CASCADE);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> alter table walizka alter kolor set default 'rozowy';
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+
+
+mysql> insert into walizka (pojemnosc,id_wlasciciela) Values ('700','1');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into walizka (pojemnosc,id_wlasciciela) Values ('150','3');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from walizka;
++------------+-----------+--------+----------------+
+| id_walizki | pojemnosc | kolor  | id_wlasciciela |
++------------+-----------+--------+----------------+
+|          1 |       700 | rozowy |              1 |
+|          2 |       150 | rozowy |              3 |
++------------+-----------+--------+----------------+
+2 rows in set (0.00 sec)
+
+
+
+mysql> create table izba(adres_budynku VARCHAR(40),nazwa_izby VARCHAR(40),metraz INT UNSIGNED,wlasciciel INT,FOREIGN KEY(wlasciciel) REFERENCES postac(id_postaci) ON DELETE SET NULL);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> alter table izba add Primary key(adres_budynku,nazwa_izby);
+Query OK, 0 rows affected (0.12 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table izba add kolor VARCHAR(40)  after metraz;
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table izba alter kolor set default 'czarny';
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> insert into izba (adres_budynku,nazwa_izby,metraz,wlasciciel) VALUES ('tesciowej_5','spizarnia',300,'1');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from izba;
++---------------+------------+--------+--------+------------+
+| adres_budynku | nazwa_izby | metraz | kolor  | wlasciciel |
++---------------+------------+--------+--------+------------+
+| tesciowej_5   | spizarnia  |    300 | czarny |          1 |
++---------------+------------+--------+--------+------------+
+1 row in set (0.00 sec)
+
+
+
+
+mysql> create table przetwory (id_przetworu INT PRIMARY KEY,rok_produkcji YEAR NOT NULL DEFAULT (YEAR(1654-01-01)),id_wykonawcy INT, FOREIGN KEY(id_wykonawcy) REFERENCES postac(id_postaci),zawartosc VARCHAR(40),dodatek VARCHAR(40) DEFAULT 'papryczka_chilli',id_konsumenta INT, FOREIGN KEY(id_konsumenta) REFERENCES postac(id_postaci));
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> insert into przetwory (id_przetworu,rok_produkcji,id_wykonawcy,zawartosc,id_konsumenta) VALUES ('1','1977','1','bigos','3');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from przetwory;
++--------------+---------------+--------------+-----------+------------------+---------------+
+| id_przetworu | rok_produkcji | id_wykonawcy | zawartosc | dodatek          | id_konsumenta |
++--------------+---------------+--------------+-----------+------------------+---------------+
+|            1 |          1977 |            1 | bigos     | papryczka_chilli |             3 |
++--------------+---------------+--------------+-----------+------------------+---------------+
+1 row in set (0.00 sec)
+
+
+
+
+mysql> insert into postac (nazwa,rodzaj,data_ur,wiek) VALUES ('Macius','wiking','1522-07-08','500');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into postac (nazwa,rodzaj,data_ur,wiek) VALUES ('Franek','wiking','1822-09-13','200');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into postac (nazwa,rodzaj,data_ur,wiek) VALUES ('Janek','wiking','1022-09-02','1000');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> create table statek (nazwa_statku Varchar(50) PRIMARY KEY,rodzaj_statku ENUM('handlowy','wikingowy','pasazerski'),data_
+wodowania DATE,max_ladownosc INT UNSIGNED);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> insert into statek (nazwa_statku ,rodzaj_statku ,data_wodowania ,max_ladownosc) VALUES ('titanic','pasazerski','1912-04-15','46329');
+Query OK, 1 row affected (0.15 sec)
+
+mysql> insert into statek (nazwa_statku ,rodzaj_statku ,data_wodowania ,max_ladownosc) VALUES ('czarna_perla','wikingowy','2004-01-08','15000');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from statek;
++--------------+---------------+----------------+---------------+
+| nazwa_statku | rodzaj_statku | data_wodowania | max_ladownosc |
++--------------+---------------+----------------+---------------+
+| czarna_perla | wikingowy     | 2004-01-08     |         15000 |
+| titanic      | pasazerski    | 1912-04-15     |         46329 |
++--------------+---------------+----------------+---------------+
+2 rows in set (0.05 sec)
+
+mysql> alter table postac add funkcja Varchar(50);
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> update postac set funkcja='kapitan' where id_postaci='1';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> alter table postac add(nazwa_statku Varchar(40), FOREIGN KEY(nazwa_statku) REFERENCES statek(nazwa_statku));
+Query OK, 6 rows affected (0.12 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> update postac set nazwa_statku = 'czarna_perla' where id_postaci='1';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set nazwa_statku = 'czarna_perla' where id_postaci='2';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set nazwa_statku = 'titanic' where id_postaci='4';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set nazwa_statku = 'titanic' where id_postaci='5';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set nazwa_statku = 'titanic' where id_postaci='6';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select *from postac;
++------------+----------+---------+------------+------+---------+--------------+
+| id_postaci | nazwa    | rodzaj  | data_ur    | wiek | funkcja | nazwa_statku |
++------------+----------+---------+------------+------+---------+--------------+
+|          1 | Bjorn    | wiking  | 1920-07-12 |  102 | kapitan | czarna_perla |
+|          2 | Drozd    | ptak    | 1410-06-25 |  612 | NULL    | czarna_perla |
+|          3 | Tesciowa | kobieta | 1935-01-01 |   88 | NULL    | NULL         |
+|          4 | Janek    | wiking  | 1022-09-02 | 1000 | NULL    | titanic      |
+|          5 | Macius   | wiking  | 1522-07-08 |  500 | NULL    | titanic      |
+|          6 | Franek   | wiking  | 1822-09-13 |  200 | NULL    | titanic      |
++------------+----------+---------+------------+------+---------+--------------+
+6 rows in set (0.00 sec)
+
+mysql> select *from izba;
++---------------+------------+--------+--------+------------+
+| adres_budynku | nazwa_izby | metraz | kolor  | wlasciciel |
++---------------+------------+--------+--------+------------+
+| tesciowej_5   | spizarnia  |    300 | czarny |          1 |
++---------------+------------+--------+--------+------------+
+1 row in set (0.02 sec)
+
+mysql> delete from izba where nazwa_izby='spizarnia';
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from izba;
+Empty set (0.00 sec)
+
+mysql> drop table izba;
+Query OK, 0 rows affected (0.01 sec)
