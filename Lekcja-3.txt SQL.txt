@@ -1,0 +1,13 @@
+mysql> create table zasob as select *from wikingowie.zasob;
+Query OK, 28 rows affected, 1 warning (0.12 sec)
+Records: 28  Duplicates: 0  Warnings: 1
+
+mysql> create table zasob as select *from wikingowie.ekwipunek;
+ERROR 1050 (42S01): Table 'zasob' already exists
+mysql> create table ekwipunek as select *from wikingowie.ekwipunek;
+Query OK, 28 rows affected (0.08 sec)
+Records: 28  Duplicates: 0  Warnings: 0
+
+mysql> create table kreatura as select *from wikingowie.kreatura;
+Query OK, 19 rows affected (0.10 sec)
+Records: 19  Duplicates: 0  Warnings: 0
