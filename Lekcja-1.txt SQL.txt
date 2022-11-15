@@ -107,6 +107,13 @@ Query OK, 1 row affected (0.00 sec)
 mysql> insert into postac (nazwa,rodzaj,data_ur,wiek) VALUES ('Janek','wiking','1022-09-02','1000');
 Query OK, 1 row affected (0.03 sec)
 
+mysql> insert into postac (nazwa,rodzaj,data_ur,wiek) VALUES ('Sebek','wiking','1700-01-01','322');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into postac (nazwa,rodzaj,data_ur,wiek) VALUES ('Heniu','wiking','1600-01-01','422');
+Query OK, 1 row affected (0.01 sec)
+
+
 mysql> create table statek (nazwa_statku Varchar(50) PRIMARY KEY,rodzaj_statku ENUM('handlowy','wikingowy','pasazerski'),data_
 wodowania DATE,max_ladownosc INT UNSIGNED);
 Query OK, 0 rows affected (0.02 sec)
@@ -157,6 +164,15 @@ Rows matched: 1  Changed: 1  Warnings: 0
 mysql> update postac set nazwa_statku = 'titanic' where id_postaci='6';
 Query OK, 1 row affected (0.01 sec)
 Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set nazwa_statku = 'czarna_perla' where id_postaci='7';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update postac set nazwa_statku = 'czarna_perla' where id_postaci='8';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
 
 mysql> select *from postac;
 +------------+----------+---------+------------+------+---------+--------------+
