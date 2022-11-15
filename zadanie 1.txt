@@ -1,0 +1,2 @@
+mysql> create table postac (id_postaci INT PRIMARY KEY AUTO_INCREMENT, nazwa VARCHAR(40), rodzaj ENUM('wiking', 'ptak', 'kobieta'), data_ur DATE, wiek INT UNSIGNED);
+Query OK, 0 rows affected (0.02 sec)
