@@ -5,3 +5,44 @@ mysql> select avg(waga) as srednia from kreatura where  rodzaj= 'wiking';
 | 95.1111 |
 +---------+
 1 row in set (0.00 sec)
+
+mysql> select avg(waga) as srednia,rodzaj,count(nazwa) as liczbakreatur from kreatura group by rodzaj;
++-----------+---------+---------------+
+| srednia   | rodzaj  | liczbakreatur |
++-----------+---------+---------------+
+|   95.1111 | wiking  |             9 |
+| 1050.5000 | ryba    |             2 |
+|    3.0000 | waz     |             1 |
+|    2.0000 | ptak    |             2 |
+|   41.2500 | wiedzma |             4 |
+|   32.0000 | malpa   |             1 |
++-----------+---------+---------------+
+6 rows in set (0.00 sec)
+
+mysql> select rodzaj,avg(2022-YEAR(dataUr)) as srednia from kreatura group by rodzaj;
++---------+----------+
+| rodzaj  | srednia  |
++---------+----------+
+| wiking  | 351.5556 |
+| ryba    | 346.5000 |
+| waz     | 345.0000 |
+| ptak    | 346.5000 |
+| wiedzma | 530.7500 |
+| malpa   | 350.0000 |
++---------+----------+
+6 rows in set (0.00 sec)
+
+
+mysql> select rodzaj,SUM(waga*ilosc)as sumawag from zasob group by rodzaj;
++--------------------+---------+
+| rodzaj             | sumawag |
++--------------------+---------+
+| jedzenie           |  239.00 |
+| narzedzie          |   13.00 |
+| NULL               |   61.00 |
+| ubranie            |  323.00 |
+| narzedzie zbrodni  |   26.00 |
+| material budowlany |   90.00 |
+| miejsce wypoczynku |    4.00 |
++--------------------+---------+
+7 rows in set (0.00 sec)
