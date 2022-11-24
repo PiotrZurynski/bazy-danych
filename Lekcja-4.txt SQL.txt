@@ -46,3 +46,77 @@ mysql> select rodzaj,SUM(waga*ilosc)as sumawag from zasob group by rodzaj;
 | miejsce wypoczynku |    4.00 |
 +--------------------+---------+
 7 rows in set (0.00 sec)
+
+
+
+mysql> select rodzaj, avg(waga) as sredniawaga from zasob where ilosc >=4 group by rodzaj having sum(waga*ilosc)>10;
++--------------------+-------------+
+| rodzaj             | sredniawaga |
++--------------------+-------------+
+| jedzenie           |    1.250000 |
+| NULL               |    0.420000 |
+| ubranie            |   10.366667 |
+| narzedzie zbrodni  |    2.000000 |
+| material budowlany |    0.300000 |
++--------------------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> select nazwa,count(nazwa) as liczbnazw from zasob group by nazwa having MIN(ilosc)>1;
++-----------------+-----------+
+| nazwa           | liczbnazw |
++-----------------+-----------+
+| banan           |         2 |
+| figa            |         1 |
+| bataty          |         1 |
+| opos            |         1 |
+| stanik          |         4 |
+| buty            |         1 |
+| lisc palmowy    |         1 |
+| skora geparda   |         1 |
+| kiel slonia     |         1 |
+| dzida           |         1 |
+| luk             |         1 |
+| pnacza          |         1 |
+| deski           |         1 |
+| ogien do ziania |         1 |
++-----------------+-----------+
+14 rows in set (0.00 sec)
+mysql> select distinct rodzaj, count(nazwa) as liczbanazw  from zasob group by nazwa  having Min(ilosc)>1;
++--------------------+------------+
+| rodzaj             | liczbanazw |
++--------------------+------------+
+| NULL               |          1 |
+| NULL               |          4 |
+| jedzenie           |          1 |
+| jedzenie           |          2 |
+| material budowlany |          1 |
+| narzedzie zbrodni  |          1 |
+| ubranie            |          1 |
++--------------------+------------+
+7 rows in set (0.00 sec)
+
+
+
+
+
+mysql> select nazwa,sum(ilosc) from kreatura natural join ekwipunek group by nazwa;
++-----------+------------+
+| nazwa     | sum(ilosc) |
++-----------+------------+
+| Bjorn     |         64 |
+| Brutal    |          4 |
+| Astrid    |          6 |
+| Khorad    |          1 |
+| Ibra      |          2 |
+| Tesciowa  |          5 |
+| Defgard   |         55 |
+| Bjolkolur |         12 |
+| Drozd     |          1 |
+| Szczeki   |          1 |
++-----------+------------+
+10 rows in set (0.00 sec)
+
+
+
+
+
