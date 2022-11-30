@@ -33,54 +33,46 @@ mysql> select rodzaj,avg(2022-YEAR(dataUr)) as srednia from kreatura group by ro
 6 rows in set (0.00 sec)
 
 
-mysql> select rodzaj,SUM(waga*ilosc)as sumawag from zasob group by rodzaj;
-+--------------------+---------+
-| rodzaj             | sumawag |
-+--------------------+---------+
-| jedzenie           |  239.00 |
-| narzedzie          |   13.00 |
-| NULL               |   61.00 |
-| ubranie            |  323.00 |
-| narzedzie zbrodni  |   26.00 |
-| material budowlany |   90.00 |
-| miejsce wypoczynku |    4.00 |
-+--------------------+---------+
+
+mysql> SELECT SUM(waga) AS 'waga_calkowita' FROM zasob GROUP BY rodzaj;
++----------------+
+| waga_calkowita |
++----------------+
+|         130.00 |
+|          13.00 |
+|           9.10 |
+|          33.10 |
+|           6.00 |
+|           0.60 |
+|           4.00 |
++----------------+
 7 rows in set (0.00 sec)
 
 
 
-mysql> select rodzaj, avg(waga) as sredniawaga from zasob where ilosc >=4 group by rodzaj having sum(waga*ilosc)>10;
-+--------------------+-------------+
-| rodzaj             | sredniawaga |
-+--------------------+-------------+
-| jedzenie           |    1.250000 |
-| NULL               |    0.420000 |
-| ubranie            |   10.366667 |
-| narzedzie zbrodni  |    2.000000 |
-| material budowlany |    0.300000 |
-+--------------------+-------------+
-5 rows in set (0.00 sec)
 
-mysql> select nazwa,count(nazwa) as liczbnazw from zasob group by nazwa having MIN(ilosc)>1;
-+-----------------+-----------+
-| nazwa           | liczbnazw |
-+-----------------+-----------+
-| banan           |         2 |
-| figa            |         1 |
-| bataty          |         1 |
-| opos            |         1 |
-| stanik          |         4 |
-| buty            |         1 |
-| lisc palmowy    |         1 |
-| skora geparda   |         1 |
-| kiel slonia     |         1 |
-| dzida           |         1 |
-| luk             |         1 |
-| pnacza          |         1 |
-| deski           |         1 |
-| ogien do ziania |         1 |
-+-----------------+-----------+
-14 rows in set (0.00 sec)
+mysql> SELECT AVG(waga) AS 'srednia_waga', nazwa FROM zasob GROUP BY nazwa HAVING SUM(ilosc) >= 4 AND SUM(waga) > 10;
++--------------+---------------+
+| srednia_waga | nazwa         |
++--------------+---------------+
+|     4.333333 | kokos         |
+|    30.000000 | skora geparda |
++--------------+---------------+
+2 rows in set (0.00 sec)
+
+
+mysql> SELECT COUNT(nazwa), rodzaj FROM zasob GROUP BY rodzaj HAVING COUNT(naz) > 1;
++--------------+--------------------+
+| COUNT(nazwa) | rodzaj             |
++--------------+--------------------+
+|            9 | jedzenie           |
+|            7 | NULL               |
+|            4 | ubranie            |
+|            3 | narzedzie zbrodni  |
+|            2 | material budowlany |
+|            2 | miejsce wypoczynku |
++--------------+--------------------+
+6 rows in set (0.00 sec)
 mysql> select distinct rodzaj, count(nazwa) as liczbanazw  from zasob group by nazwa  having Min(ilosc)>1;
 +--------------------+------------+
 | rodzaj             | liczbanazw |
@@ -118,5 +110,108 @@ mysql> select nazwa,sum(ilosc) from kreatura natural join ekwipunek group by naz
 
 
 
+mysql> SELECT kreatura.nazwa, zasob.nazwa FROM kreatura JOIN ekwipunek ON ekwipunek.idKreatury = kreatura.idKreatury JOIN zasob
+    ->  ON zasob.idZasobu = ekwipunek.idZasobu;
++-----------+-------------------+
+| nazwa     | nazwa             |
++-----------+-------------------+
+| Astrid    | kokos             |
+| Bjorn     | kokos             |
+| Defgard   | siekiera          |
+| Brutal    | siekiera          |
+| Bjorn     | siekiera          |
+| Brutal    | kokos             |
+| Szczeki   | opos              |
+| Bjorn     | stanik            |
+| Astrid    | stanik            |
+| Drozd     | stanik            |
+| Bjorn     | buty              |
+| Bjorn     | lisc palmowy      |
+| Defgard   | skora geparda     |
+| Ibra      | skora geparda     |
+| Defgard   | kiel slonia       |
+| Khorad    | kiel slonia       |
+| Bjorn     | topor             |
+| Ibra      | dzida             |
+| Astrid    | luk               |
+| Defgard   | pnacza            |
+| Bjolkolur | pnacza            |
+| Bjolkolur | deski             |
+| Bjorn     | hamak             |
+| Tesciowa  | chatka na drzewie |
+| Tesciowa  | nie wiadomo co    |
+| Tesciowa  | ogien do ziania   |
+| Tesciowa  | miotla            |
++-----------+-------------------+
+27 rows in set (0.00 sec)
 
 
+
+
+mysql> SELECT kreatura.nazwa FROM kreatura LEFT JOIN ekwipunek ON kreatura.idKreatury = ekwipunek.idKreatury WHERE ekwipunek.idKreatury
+    -> IS NULL;
++----------------------------+
+| nazwa                      |
++----------------------------+
+| Birgun                     |
+| Nemo                       |
+| Loko                       |
+| Ara                        |
+| Tiki                       |
+| Dziadek                    |
+| sztuczna szczeka tesciowej |
+| Tesciowa dziadka           |
+| Babajaga                   |
++----------------------------+
+9 rows in set (0.00 sec)
+
+
+
+
+mysql> SELECT kreatura.nazwa, zasob.nazwa FROM kreatura JOIN ekwipunek ON ekwipunek.idKreatury = kreatura.idKreatury JOIN zasob 
+ON zasob.idZasobu = ekwipunek.idZasobu WHERE YEAR(dataUR) BETWEEN 1600 AND 1699;
++-----------+-------------------+
+| nazwa     | nazwa             |
++-----------+-------------------+
+| Astrid    | kokos             |
+| Bjorn     | kokos             |
+| Defgard   | siekiera          |
+| Brutal    | siekiera          |
+| Bjorn     | siekiera          |
+| Brutal    | kokos             |
+| Szczeki   | opos              |
+| Bjorn     | stanik            |
+| Astrid    | stanik            |
+| Drozd     | stanik            |
+| Bjorn     | buty              |
+| Bjorn     | lisc palmowy      |
+| Defgard   | skora geparda     |
+| Ibra      | skora geparda     |
+| Defgard   | kiel slonia       |
+| Khorad    | kiel slonia       |
+| Bjorn     | topor             |
+| Ibra      | dzida             |
+| Astrid    | luk               |
+| Defgard   | pnacza            |
+| Bjolkolur | pnacza            |
+| Bjolkolur | deski             |
+| Bjorn     | hamak             |
+| Tesciowa  | chatka na drzewie |
+| Tesciowa  | nie wiadomo co    |
+| Tesciowa  | ogien do ziania   |
+| Tesciowa  | miotla            |
++-----------+-------------------+
+27 rows in set (0.00 sec)
+
+
+mysql> SELECT kreatura.nazwa FROM kreatura JOIN ekwipunek ON ekwipunek.idKreatury = kreatura.idKreatury 
+JOIN zasob ON zasob.idZasobu = ekwipunek.idZasobu WHERE zasob.rodzaj = 'jedzenie' ORDER BY dataUr DESC LIMIT 5;
++---------+
+| nazwa   |
++---------+
+| Astrid  |
+| Szczeki |
+| Brutal  |
+| Bjorn   |
++---------+
+4 rows in set (0.00 sec)
