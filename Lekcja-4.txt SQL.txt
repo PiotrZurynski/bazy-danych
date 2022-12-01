@@ -215,3 +215,37 @@ JOIN zasob ON zasob.idZasobu = ekwipunek.idZasobu WHERE zasob.rodzaj = 'jedzenie
 | Bjorn   |
 +---------+
 4 rows in set (0.00 sec)
+
+mysql> select concat (k1.nazwa, " - ",  k1.idkreatury) as nazwa1, concat (k2.nazwa, " - ", k2.idkreatury) as nazwa2 from kreatura k1 join kreatura k2 where k2.idkreatury-k1.idkreatury=5;
++---------------+---------------------------------+
+| nazwa1        | nazwa2                          |
++---------------+---------------------------------+
+| Bjorn - 1     | Astrid - 6                      |
+| Brutal - 2    | Ibra - 7                        |
+| Khorad - 3    | Bjolkolur - 8                   |
+| Birgun - 4    | Nemo - 9                        |
+| Defgard - 5   | Loko - 10                       |
+| Astrid - 6    | Drozd - 11                      |
+| Ibra - 7      | Ara - 12                        |
+| Bjolkolur - 8 | Szczeki - 13                    |
+| Nemo - 9      | Tesciowa - 14                   |
+| Loko - 10     | Tiki - 15                       |
+| Drozd - 11    | Dziadek - 16                    |
+| Ara - 12      | sztuczna szczeka tesciowej - 17 |
+| Szczeki - 13  | Tesciowa dziadka - 18           |
++---------------+---------------------------------+
+13 rows in set (0.00 sec)
+
+
+mysql> select kreatura.rodzaj,avg(zasob.waga *zasob.ilosc) as sredniawaga from kreatura join ekwipunek on ekwipunek.idkreatury=kreatura.idkreatury join zasob on zasob.idzasobu=ekwipunek.idzasobu where kreatura.rodzaj != 'malpa' AND kreatura.rodzaj != 'waz' group by rodzaj having sum(ekwipunek.ilosc) <30;
++---------+-------------+
+| rodzaj  | sredniawaga |
++---------+-------------+
+| ryba    |   24.000000 |
+| ptak    |    8.000000 |
+| wiedzma |    3.250000 |
++---------+-------------+
+3 rows in set (0.00 sec)
+
+
+
