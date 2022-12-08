@@ -1,0 +1,11 @@
+mysql> select kreatura.nazwa from kreatura where idkreatury not in (select id_uczestnika from uczestnicy);
++----------+
+| nazwa    |
++----------+
+| Brutal   |
+| Defgard  |
+| Ara      |
+| Gollum   |
+| Babajaga |
++----------+
+5 rows in set (0.00 sec)
