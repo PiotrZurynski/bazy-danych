@@ -75,3 +75,78 @@ mysql> select count(sektor),sektor.nazwa from sektor left join etapy_wyprawy on 
 +---------------+--------------------+
 9 rows in set (0.00 sec)
 
+
+
+mysql> select kreatura.nazwa, if(uczestnicy.id_uczestnika>0, 'bral udzial w wyprawie', 'nie bral udzialu w wyprawie') as udzial from kreatura left join  uczestnicy on kreatura.idkreatury=uczestnicy.id_uczestnika group by kreatura.nazwa;
++----------------------------+-----------------------------+
+| nazwa                      | udzial                      |
++----------------------------+-----------------------------+
+| Bjorn                      | bral udzial w wyprawie      |
+| Brutal                     | nie bral udzialu w wyprawie |
+| Khorad                     | bral udzial w wyprawie      |
+| Birgun                     | bral udzial w wyprawie      |
+| Defgard                    | nie bral udzialu w wyprawie |
+| Astrid                     | bral udzial w wyprawie      |
+| Ibra                       | bral udzial w wyprawie      |
+| Bjolkolur                  | bral udzial w wyprawie      |
+| Nemo                       | bral udzial w wyprawie      |
+| Loko                       | bral udzial w wyprawie      |
+| Drozd                      | bral udzial w wyprawie      |
+| Ara                        | nie bral udzialu w wyprawie |
+| Szczeki                    | bral udzial w wyprawie      |
+| Tesciowa                   | bral udzial w wyprawie      |
+| Tiki                       | bral udzial w wyprawie      |
+| Dziadek                    | bral udzial w wyprawie      |
+| sztuczna szczeka tesciowej | bral udzial w wyprawie      |
+| Tesciowa dziadka           | bral udzial w wyprawie      |
+| Gollum                     | nie bral udzialu w wyprawie |
+| Babajaga                   | nie bral udzialu w wyprawie |
++----------------------------+-----------------------------+
+20 rows in set (0.00 sec)
+
+
+mysql> select wyprawa.nazwa,sum(char_length(etapy_wyprawy.dziennik))as liczba_znakow from wyprawa inne
+ sum(char_length(etapy_wyprawy.dziennik))<400 ;
++-----------------------+---------------+
+| nazwa                 | liczba_znakow |
++-----------------------+---------------+
+| Poszukiwanie ziecia   |           344 |
+| Polowanie na tesciowa |           310 |
++-----------------------+---------------+
+2 rows in set (0.00 sec)
+
+
+mysql> select wyprawa.nazwa, (SUM(zasob.waga*ekwipunek.ilosc))/count(uczestnicy.id_uczestnika) as srednia_waga_zasobu_noszonego from wyprawa joi
+n uczestnicy on wyprawa.id_wyprawy=uczestnicy.id_wyprawy join ekwipunek on uczestnicy.id_uczestnika=ekwipunek.idkreatury join zasob on ekwipunek.idzasobu=zasob.idzasobu group by wyprawa.nazwa;
++-----------------------+-------------------------------+
+| nazwa                 | srednia_waga_zasobu_noszonego |
++-----------------------+-------------------------------+
+| Nakarm kanibala       |                      5.364286 |
+| Polowanie na tesciowa |                      9.427273 |
+| Poszukiwanie ziecia   |                      3.500000 |
++-----------------------+-------------------------------+
+3 rows in set (0.00 sec)
+
+
+mysql> select kreatura.nazwa, datediff(wyprawa.data_rozpoczecia,kreatura.dataur) as wiek_w_dniach from kreatura join uczestnicy on uczestnicy.id_uczestnika=kreatura.idkreatury join wyprawa on uczestnicy.id_wyprawy=wyprawa.id_wyprawy join etapy_wyprawy on wyprawa.id_wyprawy=etapy_wyprawy.
+idwyprawy join sektor on etapy_wyprawy.sektor=sektor.id_sektora where sektor.nazwa='chatka dziadka' group by kreatura.nazwa;
++----------------------------+---------------+
+| nazwa                      | wiek_w_dniach |
++----------------------------+---------------+
+| Bjorn                      |         11080 |
+| Khorad                     |         10610 |
+| Birgun                     |          9216 |
+| Astrid                     |          8384 |
+| Ibra                       |          9678 |
+| Bjolkolur                  |          8890 |
+| Nemo                       |          8339 |
+| Loko                       |          8338 |
+| Drozd                      |          9157 |
+| Szczeki                    |          9616 |
+| Tesciowa                   |         16376 |
+| Tiki                       |         10220 |
+| Dziadek                    |         20279 |
+| sztuczna szczeka tesciowej |          7293 |
+| Tesciowa dziadka           |         25661 |
++----------------------------+---------------+
+15 rows in set (0.01 sec)
