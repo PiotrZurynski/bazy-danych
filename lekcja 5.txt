@@ -150,3 +150,4 @@ idwyprawy join sektor on etapy_wyprawy.sektor=sektor.id_sektora where sektor.naz
 | Tesciowa dziadka           |         25661 |
 +----------------------------+---------------+
 15 rows in set (0.01 sec)
+
